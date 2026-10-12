@@ -2,7 +2,7 @@
 
 Academia de ciberseguridad para **aprender practicando**: armas redes y las arreglas, investigas equipos atacados desde una terminal, preparas CompTIA Security+ y resuelves incidentes como analista SOC. Cada error te explica **por qué** pasó, **cómo** se arregla y **cómo se ve en un trabajo real**.
 
-**App:** https://cyberquest-academy.vercel.app · **API:** https://cyberquest-api.onrender.com/health
+**App:** https://cyberquest-academy.vercel.app · **API:** https://cyberquest-api-1h1g.onrender.com/health
 
 > Proyecto personal de aprendizaje de Alfonso Chavarín. Todo ocurre en simulaciones dentro del navegador: nada toca equipos o redes reales.
 

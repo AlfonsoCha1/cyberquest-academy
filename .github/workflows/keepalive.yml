@@ -18,5 +18,5 @@ jobs:
     steps:
       - name: Ping a /health
         env:
-          API_URL: ${{ vars.API_URL || 'https://cyberquest-api.onrender.com' }}
+          API_URL: ${{ vars.API_URL || 'https://cyberquest-api-1h1g.onrender.com' }}
         run: curl -fsS --retry 3 --retry-delay 20 --max-time 90 "$API_URL/health" || echo "El API no respondió esta vez"
