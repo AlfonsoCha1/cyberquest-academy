@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CyberQuest Academy</title>
+<script>try{var v=localStorage.getItem("cyberquest-lite"),n=navigator;if(v==="1"||(v===null&&((n.hardwareConcurrency&&n.hardwareConcurrency<=2)||(n.deviceMemory&&n.deviceMemory<=2)||(n.connection&&n.connection.saveData))))document.documentElement.className+=" lite"}catch(e){}</script>
+<meta name="description" content="Academia de ciberseguridad para practicar: laboratorio de redes, terminales Linux/CMD/PowerShell, Security+, simulador SOC y casos reales.">
+<meta name="theme-color" content="#05040f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="stroke:var(--volt);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div><b>CyberQuest</b><span>Academy</span></div>
+    </div>
+    <nav id="nav" aria-label="Secciones"></nav>
+    <div class="side-xp" id="sideXp"></div>
+    <button class="lite-btn" id="liteBtn" type="button" aria-pressed="false">Modo ligero</button>
+  </aside>
+  <main><div class="view" id="view"></div></main>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script src="engine.js"></script>
+<script src="term-engine.js"></script>
+<script src="netlab-data.js"></script>
+<script src="cmds-data.js"></script>
+<script src="courses-data.js"></script>
+<script src="branches-data.js"></script>
+<script src="scenarios-data.js"></script>
+<script src="secplus-a.js"></script>
+<script src="secplus-b.js"></script>
+<script src="netlab-ui.js"></script>
+<script src="terminal-ui.js"></script>
+<script src="views.js"></script>
+<script src="cloud.js"></script>
+<script>
+  (function boot() {
+    loadStore();
+    renderSideXp();
+    applyLite();
+    document.getElementById('liteBtn').addEventListener('click', toggleLite);
+    var start = function () { route(); };
+    window.addEventListener('hashchange', route);
+    if (window.claude && window.claude.hot && window.claude.hot.ready) window.claude.hot.ready(start); else start();
+  })();
+</script>
+</body>
+</html>

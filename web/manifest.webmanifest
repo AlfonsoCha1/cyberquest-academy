@@ -1,0 +1,23 @@
+{
+  "name": "CyberQuest Academy",
+  "short_name": "CyberQuest",
+  "description": "Academia de ciberseguridad para practicar: redes, terminales, Security+, SOC y casos reales.",
+  "lang": "es-MX",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05040f",
+  "theme_color": "#05040f",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Laboratorio de redes", "url": "./#redes" },
+    { "name": "Terminal", "url": "./#terminal" },
+    { "name": "Security+", "url": "./#secplus" }
+  ]
+}
