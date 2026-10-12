@@ -8,7 +8,7 @@ const pct = (a, b) => b ? Math.round(a * 100 / b) : 0;
 
 /* ---------- progreso ---------- */
 const STORE_KEY = 'cyberquest-academy-v1';
-const blank = () => ({ xp: 0, quiz: {}, wrong: {}, scn: {}, net: {}, netState: {}, term: {}, cmds: {}, answered: 0, correct: 0, last: 'inicio', sub: {} });
+const blank = () => ({ xp: 0, quiz: {}, wrong: {}, scn: {}, net: {}, netState: {}, term: {}, cmds: {}, answered: 0, correct: 0, last: 'inicio', sub: {}, sql: { les: {}, ret: {}, exam: null }, jobs: {} });
 let ST = blank();
 function loadStore() { try { const raw = localStorage.getItem(STORE_KEY); if (raw) ST = Object.assign(blank(), JSON.parse(raw)); } catch (e) { /* sin almacenamiento: se juega igual */ } }
 function saveStore() { try { localStorage.setItem(STORE_KEY, JSON.stringify(ST)); } catch (e) { } }
@@ -47,12 +47,14 @@ const ICONS = {
   ramas: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="19" r="2.5"/><path d="M6 8.5v2a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-2M12 13.5v3"/>',
   soc: '<path d="M2 12h4l3-8 4 16 3-8h6"/>',
   imprevistos: '<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/>',
-  progreso: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'
+  progreso: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  sql: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  vacantes: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'
 };
 const SECTIONS = [
-  ['inicio', 'Inicio'], ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'],
+  ['inicio', 'Inicio'], ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'], ['sql', 'Bases de datos'],
   ['secplus', 'Security+'], ['cursos', 'Cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'],
-  ['imprevistos', 'Imprevistos'], ['progreso', 'Progreso']
+  ['imprevistos', 'Imprevistos'], ['vacantes', 'Vacantes'], ['progreso', 'Progreso']
 ];
 const VIEWS = {};
 const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[k] || ''}</svg>`;

@@ -1,11 +1,12 @@
 /* Service worker: guarda la app para abrirla rápido y sin Internet.
    Estrategia: responde desde la caché al instante y actualiza en segundo plano
    (la versión nueva aparece la siguiente vez que abras la app). */
-const CACHE = 'cyberquest-v2';
+const CACHE = 'cyberquest-v3';
 const SHELL = [
   './', 'index.html', 'style.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/favicon.svg',
   'config.js', 'app.js', 'engine.js', 'term-engine.js', 'netlab-data.js', 'cmds-data.js', 'courses-data.js', 'branches-data.js',
-  'scenarios-data.js', 'secplus-a.js', 'secplus-b.js', 'netlab-ui.js', 'terminal-ui.js', 'views.js', 'cloud.js'
+  'scenarios-data.js', 'secplus-a.js', 'secplus-b.js', 'netlab-ui.js', 'terminal-ui.js', 'sql-data.js', 'sql-data2.js', 'sql-ui.js',
+  'jobs-data.js', 'jobs-data2.js', 'jobs-ui.js', 'views.js', 'cloud.js'
 ];
 
 self.addEventListener('install', e => {

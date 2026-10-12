@@ -338,3 +338,22 @@ html.lite .canvas-wrap { background-image: none; }
 #toast.show { opacity: 1; visibility: visible; }
 .sync-code { font-size: 1.05rem; letter-spacing: .08em; padding: .35rem .6rem; color: var(--cyan); border-color: rgba(30,232,255,.5); }
 @media (max-width: 560px) { .panel .two { grid-template-columns: 1fr; } }
+
+/* ---------- bases de datos y vacantes ---------- */
+.sql-ta { width: 100%; font: 13px/1.55 var(--f-mono); background: #04030c; color: #d9ffef; border: 1px solid var(--rule2); border-radius: 8px; padding: 10px 12px; resize: vertical; min-height: 90px; tab-size: 2; }
+.sql-ed { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sql-err { color: var(--bad); }
+.sql-status { font-size: .85rem; }
+.sql-con { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 860px) { .sql-con { grid-template-columns: minmax(0, 1fr); } }
+.sql-schema { gap: 8px; }
+.sql-schema .sch { display: flex; flex-direction: column; gap: 6px; }
+.sch-t > summary { padding: 8px 10px !important; }
+.sch-t .acc-body { padding: 0 10px 10px !important; }
+.linkish { background: none; border: 0; padding: 0; color: var(--cyan); font: 600 .9rem var(--f-mono); cursor: pointer; text-align: left; }
+.sqlres td, .sqlres th { white-space: nowrap; }
+.ruta li { align-items: flex-start !important; }
+.ruta input { margin-top: .3rem; accent-color: var(--ok); }
+
+.view { width: 100%; }
+.view, .view > * { min-width: 0; }

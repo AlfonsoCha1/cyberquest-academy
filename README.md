@@ -13,6 +13,8 @@ Academia de ciberseguridad para **aprender practicando**: armas redes y las arre
 | **Laboratorio de redes** | Conectas PC, laptop (Wi-Fi), servidor, impresora, switch, access point, router, firewall e Internet. Configuras IP, máscara, puerta de enlace y rutas, y haces ping paso a paso (ARP, NAT, zonas LAN/DMZ/WAN). 5 misiones de casa a empresa + 3 tickets de fallas reales + modo libre. |
 | **Terminal** | Linux (servidor web atacado, 9 retos) y Windows CMD + PowerShell (PC comprometida, 8 retos): fuerza bruta, cuentas persistentes, procesos impostores, archivo hosts falso, eventos 4625/4624/4720/4732. |
 | **Comandos** | Fichas de Linux, CMD y PowerShell: qué significan, qué hacen, ejemplo y uso en seguridad, con mini examen. |
+| **Bases de datos** | SQL, PostgreSQL y SQLite con una base **real** en el navegador (SQLite vía sql.js): 12 lecciones con ejercicio y mini examen, consola con comandos `\dt`/`.tables`, 10 retos de investigación que se califican solos y examen final con resultado por tema. |
+| **Vacantes** | Pega una vacante y ve qué habilidades pide, cuáles ya practicas aquí y qué te falta. Vacantes reales desglosadas con ruta de estudio, temas extra (EDR, Microsoft 365, DLP, IA, superficie de ataque, SaaS) y preguntas de entrevista. |
 | **Security+ SY0-701** | Los 5 dominios con teoría, preguntas con explicación, simulacro y proyecto integral. |
 | **Cursos** | Temario de cursos recomendados (Google, Cisco NetAcad, AWS, Linux y Docker): conceptos, código explicado y cómo contarlo en una entrevista. |
 | **Ramas, SOC e Imprevistos** | 12 especialidades, alertas con logs para decidir qué hacer y problemas que no vienen en el curso pero sí en el trabajo. |
@@ -37,6 +39,9 @@ web/      App estática (HTML + CSS + JS sin dependencias) · PWA con service wo
   term-engine.js   terminal simulada Linux / CMD / PowerShell
   *-data.js        contenido: misiones, comandos, cursos, ramas, escenarios, Security+
   cloud.js         sincronización con el API e instalación de la app
+  sql-*.js         base de práctica, lecciones, retos y examen de SQL
+  jobs-*.js        analizador de vacantes, vacantes reales y temas que piden
+  vendor/          motor SQLite (sql.js, licencia MIT)
 api/      API en Node (sin framework) para sincronizar progreso
 tests/    pruebas del laboratorio de redes
 tools/    íconos y versión de un solo archivo para Claude
@@ -53,6 +58,7 @@ cd api && npm install && npm start
 
 # Pruebas
 node tests/netlab.test.js
+node tests/sql.test.js
 cd api && npm test
 ```
 

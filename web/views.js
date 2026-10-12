@@ -13,10 +13,12 @@ VIEWS.inicio = function (view) {
     ['redes', 'Laboratorio de redes', 'Conecta PC, switch, router y firewall. Configura IPs y haz ping. Cada falla te explica el porqué.', `${done.redes}/${MISSIONS.filter(m => !m.free).length} misiones`],
     ['terminal', 'Terminal', 'Linux, CMD y PowerShell sobre equipos simulados que fueron atacados. Resuelve retos como analista.', `${done.term}/${TERM_CHALLENGES.length} retos`],
     ['comandos', 'Comandos', 'Linux, CMD y PowerShell: qué significan, qué hacen y su uso en seguridad.', `${done.cmds} dominados`],
+    ['sql', 'Bases de datos', 'SQL, PostgreSQL y SQLite con una base real en tu navegador, retos de investigación y examen.', `${Object.keys((ST.sql || {}).les || {}).length}/${SQL_LESSONS.length} lecciones`],
     ['secplus', 'Security+ SY0-701', 'Tus 5 dominios con teoría, preguntas, simulacro y el proyecto integral.', `${secCount} preguntas`],
     ['cursos', 'Cursos', 'Google, Cisco, AWS, Linux y Docker: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
     ['ramas', 'Las 12 ramas', 'SOC, forense, nube, criptografía y más: conceptos, herramientas y quiz.', `${BRANCHES.length} ramas`],
     ['soc', 'Simulador SOC', 'Alertas con logs reales. Decide qué harías y compáralo con un profesional.', `${SOC_SCN.length} casos`],
+    ['vacantes', 'Vacantes', 'Pega una vacante y ve qué te falta. Vacantes reales con ruta de estudio, temas extra y preguntas de entrevista.', `${JOBS.length} vacante${JOBS.length > 1 ? 's' : ''}`],
     ['imprevistos', 'Imprevistos', 'Lo que no viene en el curso pero pasa en el trabajo. Practica reaccionar.', `${IMPREVISTOS.length} casos`]
   ];
   view.appendChild(h(`<div class="head">
