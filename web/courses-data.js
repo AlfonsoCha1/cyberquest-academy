@@ -1,4 +1,4 @@
-/* ===== Mis cursos: contenido original alineado al temario de cada curso ===== */
+/* ===== Cursos recomendados: contenido original alineado al temario de cada curso ===== */
 const L = (...x) => x.join('\n');
 const COURSES = [
   {
@@ -19,7 +19,7 @@ const COURSES = [
     ],
     explain: [
       ['¿Qué es la tríada CIA?', 'Son los tres objetivos de la seguridad: confidencialidad (solo quien debe ve la información), integridad (nadie la altera sin permiso) y disponibilidad (está cuando se necesita). Por ejemplo, el cifrado protege la confidencialidad, un hash la integridad y los respaldos la disponibilidad.'],
-      ['¿Por qué te interesa un SOC?', 'Me gusta investigar y resolver problemas. En mi trabajo anterior en pruebas funcionales y bases de datos aprendí a seguir procesos, documentar y detectar lo que no cuadra, que es justo lo que hace un analista al revisar alertas.'],
+      ['¿Por qué te interesa un SOC?', '(Ejemplo: adáptalo a tu historia) Me gusta investigar y resolver problemas. En mi trabajo anterior aprendí a seguir procesos, documentar y detectar lo que no cuadra, que es justo lo que hace un analista al revisar alertas.'],
       ['Háblame de un ataque histórico', 'Equifax en 2017: una vulnerabilidad pública en Apache Struts no se parchó a tiempo y se expusieron datos de más de 140 millones de personas. Demuestra que la gestión de parches y el inventario de activos son tan importantes como las herramientas caras.']
     ],
     qs: [
@@ -35,7 +35,7 @@ const COURSES = [
   },
   {
     id: 'netacad', name: 'Introducción a la ciberseguridad', org: 'Cisco Networking Academy', url: 'https://www.netacad.com/es/courses/introduction-to-cybersecurity?courseLang=es-XL',
-    note: 'La página pública del curso no muestra su lista de módulos sin iniciar sesión, así que este resumen sigue los temas generales que anuncia: proteger tu vida digital y los retos de seguridad de las empresas. Cuando me pases tus apuntes lo ajusto a tus módulos.',
+    note: 'La página pública del curso no muestra su lista de módulos sin iniciar sesión, así que este resumen sigue los temas generales que anuncia: proteger tu vida digital y los retos de seguridad de las empresas. Revisa en la plataforma los módulos exactos de tu versión del curso.',
     intro: 'Curso gratuito de Cisco: por qué importa la ciberseguridad, cómo atacan, cómo proteges tus datos y tu privacidad, cómo se defiende una organización y qué carreras hay.',
     sections: [
       { t: 'Por qué importa la ciberseguridad', puntos: ['Tus datos personales (identidad, salud, finanzas, ubicación) valen dinero: se venden, se usan para fraudes o para extorsionar.', 'Las organizaciones guardan datos de clientes, propiedad intelectual y datos financieros; una brecha cuesta dinero, multas y reputación.', 'Atacantes: aficionados (script kiddies), hacktivistas, crimen organizado, internos y patrocinados por estados (ciberguerra).', 'Tu identidad en línea es lo que publicas: lo que compartes en redes ayuda a un atacante a armar un engaño creíble.'] },
@@ -107,7 +107,7 @@ const COURSES = [
     ],
     code: [
       { t: 'Top de IPs con intentos fallidos', lang: 'bash', code: L('#!/bin/bash', '# Uso: ./top_fallidos.sh /var/log/auth.log', 'LOG=${1:-/var/log/auth.log}', '', 'echo "Intentos fallidos por IP:"', 'grep "Failed password" "$LOG" \\', "  | awk '{print $11}' \\", '  | sort | uniq -c | sort -nr | head -5'), exp: 'Recibe el log como argumento (o usa auth.log por defecto) y muestra las 5 IPs más insistentes. Pruébalo por partes en la sección Terminal.' },
-      { t: 'Respaldo con fecha y verificación', lang: 'bash', code: L('#!/bin/bash', 'FECHA=$(date +%F)', 'DESTINO="/backups/reportes_$FECHA.tar.gz"', '', 'tar -czf "$DESTINO" /home/alfonso/reportes', 'if [ $? -eq 0 ]; then', '  sha256sum "$DESTINO" > "$DESTINO.sha256"', '  echo "Respaldo OK: $DESTINO"', 'else', '  echo "ERROR en el respaldo" >&2', '  exit 1', 'fi'), exp: '$? revisa si tar terminó bien. Guardar el hash permite comprobar después que el respaldo no cambió (integridad).' },
+      { t: 'Respaldo con fecha y verificación', lang: 'bash', code: L('#!/bin/bash', 'FECHA=$(date +%F)', 'DESTINO="/backups/reportes_$FECHA.tar.gz"', '', 'tar -czf "$DESTINO" /home/analista/reportes', 'if [ $? -eq 0 ]; then', '  sha256sum "$DESTINO" > "$DESTINO.sha256"', '  echo "Respaldo OK: $DESTINO"', 'else', '  echo "ERROR en el respaldo" >&2', '  exit 1', 'fi'), exp: '$? revisa si tar terminó bien. Guardar el hash permite comprobar después que el respaldo no cambió (integridad).' },
       { t: '¿Qué equipos responden?', lang: 'bash', code: L('#!/bin/bash', 'for i in $(seq 1 20); do', '  IP="192.168.1.$i"', '  if ping -c 1 -W 1 "$IP" > /dev/null 2>&1; then', '    echo "$IP responde"', '  fi', 'done'), exp: 'Un barrido de ping simple. > /dev/null 2>&1 descarta la salida para ver solo el resultado. Hazlo solo en redes donde tengas permiso.' }
     ],
     explain: [

@@ -2,7 +2,7 @@
 /* [os, comando, nombre corto, significado, qué hace, ejemplo, uso en ciberseguridad, categoría] */
 const CMD_RAW = [
   ['linux', 'pwd', 'pwd', 'print working directory', 'Muestra la carpeta donde estás parado.', 'pwd', 'Antes de borrar o copiar algo, confirma dónde estás. Un rm en la carpeta equivocada es un incidente.', 'Archivos'],
-  ['linux', 'ls -la', 'ls', 'list', 'Lista archivos. -l da detalles (permisos, dueño, tamaño) y -a muestra los ocultos (empiezan con punto).', 'ls -la /home/alfonso', 'Los atacantes esconden cosas en archivos ocultos o en /tmp. Revisa permisos raros como -rwxrwxrwx.', 'Archivos'],
+  ['linux', 'ls -la', 'ls', 'list', 'Lista archivos. -l da detalles (permisos, dueño, tamaño) y -a muestra los ocultos (empiezan con punto).', 'ls -la /home/analista', 'Los atacantes esconden cosas en archivos ocultos o en /tmp. Revisa permisos raros como -rwxrwxrwx.', 'Archivos'],
   ['linux', 'cd', 'cd', 'change directory', 'Cambia de carpeta. cd .. sube un nivel, cd ~ va a tu carpeta personal, cd / a la raíz.', 'cd /var/log', '/var/log es donde vive la evidencia: ahí pasarás mucho tiempo como analista.', 'Archivos'],
   ['linux', 'cat', 'cat', 'concatenate', 'Muestra el contenido completo de un archivo (o une varios).', 'cat /etc/passwd', '/etc/passwd lista los usuarios. Un usuario con UID 0 que no sea root es señal de persistencia.', 'Archivos'],
   ['linux', 'less', 'less', '"less is more": paginador', 'Abre archivos grandes para leerlos con scroll. q para salir, /texto para buscar.', 'less /var/log/syslog', 'Para revisar logs largos sin llenar la pantalla.', 'Texto y logs'],
@@ -25,7 +25,7 @@ const CMD_RAW = [
   ['linux', 'chown', 'chown', 'change owner', 'Cambia el dueño de un archivo.', 'sudo chown www-data:www-data /var/www/html -R', 'Archivos del sitio web con el dueño correcto limitan el daño si atacan el servidor.', 'Usuarios y permisos'],
   ['linux', 'sudo', 'sudo', 'superuser do', 'Ejecuta un comando como administrador (root). Queda registrado.', 'sudo apt update', 'Revisa quién está en el grupo sudo y qué comandos corre: el abuso de sudo es escalada de privilegios.', 'Usuarios y permisos'],
   ['linux', 'whoami / id', 'whoami', 'who am I', 'whoami dice tu usuario; id dice tu UID y tus grupos.', 'id', 'Lo primero que hace un atacante (y un pentester) al entrar: saber con qué privilegios cuenta.', 'Usuarios y permisos'],
-  ['linux', 'useradd / passwd', 'useradd', 'add user / password', 'useradd crea usuarios; passwd cambia contraseñas.', 'sudo passwd alfonso', 'Cuentas nuevas inesperadas en /var/log/auth.log son una alerta de persistencia.', 'Usuarios y permisos'],
+  ['linux', 'useradd / passwd', 'useradd', 'add user / password', 'useradd crea usuarios; passwd cambia contraseñas.', 'sudo passwd analista', 'Cuentas nuevas inesperadas en /var/log/auth.log son una alerta de persistencia.', 'Usuarios y permisos'],
   ['linux', 'last', 'last', 'últimos', 'Muestra los últimos inicios de sesión.', 'last -n 10', 'Ver quién entró y desde dónde: un login de madrugada desde otro país es sospechoso.', 'Usuarios y permisos'],
   ['linux', 'ps aux', 'ps', 'process status', 'Lista los procesos que se están ejecutando, con usuario y consumo.', 'ps aux | grep nc', 'Encontrar procesos raros: mineros con 99% de CPU, shells inversas, nombres que imitan procesos del sistema.', 'Procesos'],
   ['linux', 'top / htop', 'top', 'table of processes', 'Monitor en vivo de CPU, memoria y procesos.', 'top', 'Un servidor lento con un proceso desconocido al 100% de CPU suele ser cryptojacking.', 'Procesos'],
@@ -40,16 +40,16 @@ const CMD_RAW = [
   ['linux', 'dig', 'dig', 'domain information groper', 'Consulta registros DNS (A, MX, TXT...).', 'dig empresa.com MX', 'Revisar SPF/DMARC (registros TXT) al investigar correos falsificados.', 'Red'],
   ['linux', 'curl -I', 'curl', 'client URL', 'Hace peticiones web desde la terminal. -I trae solo encabezados.', 'curl -I https://empresa.com', 'Revisar encabezados de seguridad o probar si una URL sospechosa responde (en un entorno aislado).', 'Red'],
   ['linux', 'wget', 'wget', 'web get', 'Descarga archivos de Internet.', 'wget https://ejemplo.com/archivo.zip', 'Los atacantes lo usan para bajar malware: en los logs, wget a IPs raras es una alerta.', 'Red'],
-  ['linux', 'ssh', 'ssh', 'secure shell', 'Conexión remota cifrada a otro equipo.', 'ssh alfonso@192.168.1.10', 'Reemplaza a Telnet. Endurécelo: sin root, con llaves y MFA.', 'Red'],
+  ['linux', 'ssh', 'ssh', 'secure shell', 'Conexión remota cifrada a otro equipo.', 'ssh analista@192.168.1.10', 'Reemplaza a Telnet. Endurécelo: sin root, con llaves y MFA.', 'Red'],
   ['linux', 'scp', 'scp', 'secure copy', 'Copia archivos por SSH entre equipos.', 'scp evidencia.zip analista@10.0.0.5:/casos/', 'Mover evidencia de forma cifrada.', 'Red'],
   ['linux', 'nmap', 'nmap', 'network mapper', 'Escanea redes: qué equipos hay y qué puertos tienen abiertos.', 'nmap -sV 192.168.1.0/24', 'Inventario y búsqueda de servicios expuestos. Úsalo SOLO en redes donde tengas autorización.', 'Red'],
   ['linux', 'tcpdump', 'tcpdump', 'volcado de TCP', 'Captura tráfico de red en la terminal.', 'sudo tcpdump -i eth0 port 53', 'Ver tráfico sospechoso (por ejemplo DNS raro) o guardar una captura para Wireshark.', 'Red'],
   ['linux', 'sha256sum', 'sha256sum', 'suma SHA-256', 'Calcula el hash de un archivo: su huella digital.', 'sha256sum factura.pdf', 'Comparar un archivo con VirusTotal sin subirlo, y probar que la evidencia no cambió (integridad).', 'Seguridad'],
-  ['linux', 'tar -czf', 'tar', 'tape archive', 'Empaqueta y comprime carpetas.', 'tar -czf respaldo.tar.gz /home/alfonso/reportes', 'Respaldos y empaquetado de evidencia.', 'Archivos'],
+  ['linux', 'tar -czf', 'tar', 'tape archive', 'Empaqueta y comprime carpetas.', 'tar -czf respaldo.tar.gz /home/analista/reportes', 'Respaldos y empaquetado de evidencia.', 'Archivos'],
   ['linux', 'apt update && apt upgrade', 'apt', 'advanced package tool', 'Actualiza la lista de paquetes e instala actualizaciones (Debian/Ubuntu).', 'sudo apt update && sudo apt upgrade', 'Parchar es la defensa más barata contra vulnerabilidades conocidas.', 'Sistema'],
   ['linux', 'history', 'history', 'historial', 'Muestra los comandos que escribiste.', 'history | tail -20', 'En forense, el .bash_history de un usuario comprometido cuenta qué hizo el atacante.', 'Sistema'],
   ['linux', 'man', 'man', 'manual', 'Abre el manual de cualquier comando.', 'man grep', 'Nadie se sabe todo: saber leer el manual es una habilidad profesional.', 'Sistema'],
-  ['cmd', 'dir', 'dir', 'directory', 'Lista archivos y carpetas (equivale a ls).', 'dir C:\\Users\\alfonso\\Downloads', 'Buscar ejecutables raros en Descargas, como factura.pdf.exe.', 'Archivos'],
+  ['cmd', 'dir', 'dir', 'directory', 'Lista archivos y carpetas (equivale a ls).', 'dir C:\\Users\\analista\\Downloads', 'Buscar ejecutables raros en Descargas, como factura.pdf.exe.', 'Archivos'],
   ['cmd', 'cd', 'cd', 'change directory', 'Cambia de carpeta. cd .. sube un nivel; cd \\ va a la raíz del disco.', 'cd C:\\Windows\\System32', 'Moverte a donde está la evidencia.', 'Archivos'],
   ['cmd', 'type', 'type', 'escribir en pantalla', 'Muestra el contenido de un archivo de texto (equivale a cat).', 'type C:\\Windows\\System32\\drivers\\etc\\hosts', 'Revisar el archivo hosts: si redirige tu banco a otra IP es pharming.', 'Archivos'],
   ['cmd', 'cls', 'cls', 'clear screen', 'Limpia la pantalla.', 'cls', 'Puro orden.', 'Sistema'],
@@ -117,7 +117,7 @@ function buildCmdQuiz(os) {
 
 /* ===== Retos de terminal ===== */
 const TERM_CHALLENGES = [
-  { id: 'l1', os: 'linux', title: 'Ubícate', lvl: 'Principiante', ask: '¿En qué carpeta estás al abrir la terminal? Escribe la ruta completa.', ans: ['/home/alfonso'], hint: 'pwd', exp: 'pwd (print working directory) muestra la ruta actual. Tu carpeta personal es /home/alfonso y se abrevia con ~.' },
+  { id: 'l1', os: 'linux', title: 'Ubícate', lvl: 'Principiante', ask: '¿En qué carpeta estás al abrir la terminal? Escribe la ruta completa.', ans: ['/home/analista'], hint: 'pwd', exp: 'pwd (print working directory) muestra la ruta actual. Tu carpeta personal es /home/analista y se abrevia con ~.' },
   { id: 'l2', os: 'linux', title: 'Lo que no se ve', lvl: 'Principiante', ask: 'En tu carpeta personal hay un archivo oculto con credenciales. ¿Cómo se llama?', ans: ['.credenciales_viejas.txt'], hint: 'ls -la', exp: 'Los archivos que empiezan con punto están ocultos y ls -a los muestra. Una contraseña en texto plano es un hallazgo de auditoría: va en un gestor de contraseñas.' },
   { id: 'l3', os: 'linux', title: 'Fuerza bruta', lvl: 'Básico', ask: '¿Cuántos intentos fallidos de contraseña hay en /var/log/auth.log?', ans: ['37'], hint: 'grep "Failed password" /var/log/auth.log | wc -l', exp: 'grep filtra las líneas con "Failed password" y wc -l las cuenta. Muchos fallos seguidos en poco tiempo = ataque de fuerza bruta contra SSH.' },
   { id: 'l4', os: 'linux', title: 'La IP más insistente', lvl: 'Intermedio', ask: '¿Qué IP hizo más intentos fallidos?', ans: ['185.220.101.47'], hint: "grep Failed /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr", exp: 'awk saca la columna 11 (la IP), sort las ordena, uniq -c cuenta repetidas y sort -nr pone la más alta arriba. Este combo lo vas a usar toda tu carrera.' },

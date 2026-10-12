@@ -1,4 +1,4 @@
-/* ===== Security+ SY0-701 · Dominios 1 y 2 (basado en las lecciones del curso del alumno) ===== */
+/* ===== Security+ SY0-701 · Dominios 1 y 2 (temario CompTIA SY0-701) ===== */
 /* Pregunta: [enunciado, [correcta, distractor, distractor, distractor], explicación, tema, en el trabajo real] */
 const SECPLUS = [];
 function domain(d) { d.questions = d.qs.map(([q, o, e, t, r]) => ({ q, o, a: 0, e, t, r, d: `D${d.n} · ${d.short}` })); delete d.qs; SECPLUS.push(d); return d; }
@@ -66,7 +66,7 @@ domain({
     ['Un código se activa solo si el programador deja de aparecer en la nómina. Es una…', ['Bomba lógica', 'Rootkit', 'Puerta trasera de red', 'Spyware'], 'Espera una condición para ejecutarse.', 'Malware', ''],
     ['Un malware se oculta en el kernel y esconde sus procesos al antivirus. Es un…', ['Rootkit', 'Gusano', 'Bloatware', 'Ransomware'], 'Los rootkits operan con privilegios máximos y se esconden del propio sistema.', 'Malware', ''],
     ['Prueban la contraseña "Verano2026!" contra cientos de cuentas, una vez cada una. Es…', ['Password spraying', 'Fuerza bruta clásica', 'Ataque de cumpleaños', 'Replay'], 'Una clave común contra muchas cuentas para no activar el bloqueo por intentos.', 'Ataques de contraseña', 'En el SIEM se ve como pocos fallos por cuenta, pero muchas cuentas desde la misma IP.'],
-    ['Un usuario inicia sesión en Cuernavaca y 10 minutos después en Rusia. ¿Qué indicador es?', ['Viaje imposible', 'Bloqueo de cuenta', 'Registro fuera de ciclo', 'Contenido bloqueado'], 'Nadie viaja tan rápido: credenciales robadas o sesión secuestrada.', 'Indicadores', ''],
+    ['Un usuario inicia sesión en Guadalajara y 10 minutos después en Rusia. ¿Qué indicador es?', ['Viaje imposible', 'Bloqueo de cuenta', 'Registro fuera de ciclo', 'Contenido bloqueado'], 'Nadie viaja tan rápido: credenciales robadas o sesión secuestrada.', 'Indicadores', ''],
     ['El sistema verifica un permiso y, antes de usar el archivo, el atacante lo reemplaza. Es…', ['Una condición de carrera (TOC/TOU)', 'Un desbordamiento de búfer', 'Una inyección SQL', 'Escape de VM'], 'Time-of-check vs time-of-use: el estado cambia entre la verificación y el uso.', 'Vulnerabilidades', ''],
     ['Un atacante envía más datos de los que caben en un espacio de memoria para ejecutar su código. Es…', ['Un desbordamiento de búfer', 'XSS', 'Password spraying', 'Una bomba lógica'], 'Se sobrescribe memoria contigua. Defensas: validar entradas, lenguajes seguros, ASLR/DEP.', 'Vulnerabilidades', ''],
     ['Un comentario en una tienda incluye <script> que se ejecuta en el navegador de quien lo lee. Es…', ['XSS (cross-site scripting)', 'Inyección SQL', 'CSRF', 'Escape de VM'], 'El script corre en el navegador de otras víctimas. La inyección SQL ataca la base de datos.', 'Vulnerabilidades web', ''],

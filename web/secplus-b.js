@@ -105,7 +105,7 @@ domain({
 SECPLUS.forEach(d => regQuiz('sec-' + d.id, `Dominio ${d.n} · ${d.short}`, d.questions));
 const SEC_ALL = SECPLUS.flatMap(d => d.questions.map((q, i) => Object.assign({ _qid: 'sec-' + d.id, _i: i }, q)));
 
-/* Proyecto de Seguridad Integral (plantilla del curso, resuelta como guía) */
+/* Proyecto de Seguridad Integral (plantilla de práctica, resuelta como guía) */
 const PROJECT_COLS = ['Activo y riesgo (CIA)', 'Control propuesto', 'Factor de autenticación', 'Modelo de autorización', 'No repudio', 'Integridad', 'Disponibilidad', 'Contabilidad (logs)', 'Zero Trust', 'Brecha detectada', 'Solución de mejora'];
 const PROJECT = [
   { esc: 'Oficina remota con acceso VPN al servidor de archivos', a: [

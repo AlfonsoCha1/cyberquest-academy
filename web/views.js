@@ -14,7 +14,7 @@ VIEWS.inicio = function (view) {
     ['terminal', 'Terminal', 'Linux, CMD y PowerShell sobre equipos simulados que fueron atacados. Resuelve retos como analista.', `${done.term}/${TERM_CHALLENGES.length} retos`],
     ['comandos', 'Comandos', 'Linux, CMD y PowerShell: qué significan, qué hacen y su uso en seguridad.', `${done.cmds} dominados`],
     ['secplus', 'Security+ SY0-701', 'Tus 5 dominios con teoría, preguntas, simulacro y el proyecto integral.', `${secCount} preguntas`],
-    ['cursos', 'Mis cursos', 'Google, Cisco, AWS, Linux y Docker: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
+    ['cursos', 'Cursos', 'Google, Cisco, AWS, Linux y Docker: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
     ['ramas', 'Las 12 ramas', 'SOC, forense, nube, criptografía y más: conceptos, herramientas y quiz.', `${BRANCHES.length} ramas`],
     ['soc', 'Simulador SOC', 'Alertas con logs reales. Decide qué harías y compáralo con un profesional.', `${SOC_SCN.length} casos`],
     ['imprevistos', 'Imprevistos', 'Lo que no viene en el curso pero pasa en el trabajo. Practica reaccionar.', `${IMPREVISTOS.length} casos`]
@@ -22,7 +22,7 @@ VIEWS.inicio = function (view) {
   view.appendChild(h(`<div class="head">
     <span class="eyebrow">CyberQuest Academy</span>
     <h1>Aprende ciberseguridad jugando, practicando y resolviendo</h1>
-    <p class="lead">Del cable y la IP hasta el SOC. Hecho sobre tu curso de Security+ y pensado para que, cuando algo pase en el trabajo, ya sepas resolverlo.</p>
+    <p class="lead">Del cable y la IP hasta el SOC. Basado en el temario de CompTIA Security+ y pensado para que, cuando algo pase en el trabajo, ya sepas resolverlo.</p>
   </div>`));
   view.appendChild(h(`<section class="panel hero">
     <div class="row" style="justify-content:space-between;align-items:flex-end">
@@ -45,7 +45,7 @@ VIEWS.inicio = function (view) {
 VIEWS.secplus = function (view) {
   let tab = ST.sub.secTab || 'd1';
   view.appendChild(h(`<div class="head"><span class="eyebrow">CompTIA Security+ · SY0-701</span><h1>Security+</h1>
-    <p class="lead">Los 5 dominios del examen, hechos con las lecciones de tu curso. Estudia la teoría, pon a prueba cada dominio, haz el simulacro y resuelve el proyecto integral.</p></div>`));
+    <p class="lead">Los 5 dominios del examen SY0-701. Estudia la teoría, pon a prueba cada dominio, haz el simulacro y resuelve el proyecto integral.</p></div>`));
   const bars = SECPLUS.map(d => { const q = ST.quiz['sec-' + d.id]; return `<div class="tile" style="gap:6px"><div class="row" style="justify-content:space-between"><strong>D${d.n} · ${esc(d.short)}</strong><span class="chip">${d.w}%</span></div><div class="bar"><i style="width:${q ? q.best : 0}%"></i></div><span class="muted" style="font-size:.8rem">${q ? 'Mejor: ' + q.best + '%' : 'Sin intentar'}</span></div>`; }).join('');
   view.appendChild(h(`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">${bars}</div>`));
   view.appendChild(h(`<div class="row"><button class="btn primary mock">Simulacro de examen (30 preguntas)</button><button class="btn proj">Proyecto de Seguridad Integral</button></div>`));
@@ -65,7 +65,7 @@ VIEWS.secplus = function (view) {
   function renderProject() {
     tabs.hidden = true; host.innerHTML = '';
     const p = h(`<div class="panel"><div class="row" style="justify-content:space-between"><h2>Proyecto de Seguridad Integral</h2><button class="btn small back">Volver a los dominios</button></div>
-      <p class="lead">Es la plantilla de tu curso: para cada escenario, aplicas todo lo aprendido. Primero intenta llenarlo tú; luego compara con una respuesta modelo. No hay una sola correcta: lo importante es el razonamiento.</p></div>`);
+      <p class="lead">Es una plantilla de práctica: para cada escenario, aplicas todo lo aprendido. Primero intenta llenarlo tú; luego compara con una respuesta modelo. No hay una sola correcta: lo importante es el razonamiento.</p></div>`);
     host.appendChild(p);
     PROJECT.forEach((row, i) => {
       const acc = h(`<details class="acc"><summary><span>Escenario ${i + 1}: ${esc(row.esc)}</span></summary><div class="acc-body"></div></details>`);
@@ -96,10 +96,10 @@ VIEWS.secplus = function (view) {
   render();
 };
 
-/* ---------- Mis cursos ---------- */
+/* ---------- Cursos ---------- */
 VIEWS.cursos = function (view) {
   let cur = ST.sub.curso || COURSES[0].id;
-  view.appendChild(h(`<div class="head"><span class="eyebrow">Mis cursos</span><h1>Lo que estoy estudiando</h1>
+  view.appendChild(h(`<div class="head"><span class="eyebrow">Cursos</span><h1>Cursos recomendados</h1>
     <p class="lead">Google, Cisco, AWS, Linux y Docker: los conceptos, el código que de verdad se usa con su explicación, cómo contarlo en una entrevista y un mini examen de cada uno.</p></div>`));
   const tabs = h(`<div class="tabs" role="tablist">${COURSES.map(c => `<button class="tab" data-c="${c.id}">${esc(c.name)}</button>`).join('')}</div>`);
   const host = h('<div></div>');

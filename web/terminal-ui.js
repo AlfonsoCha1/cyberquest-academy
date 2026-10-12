@@ -17,7 +17,7 @@ VIEWS.terminal = function (view) {
     if (!S.buf.length) S.buf.push(`<span class="dim">${os === 'linux' ? 'Servidor web01 (Ubuntu). Escribe help para ver los comandos o man <comando> para su ficha.' : 'Microsoft Windows [Versión 10.0.22631]. Escribe help para ver los comandos.'}</span>`);
     const quick = os === 'linux' ? ['ls -la', 'cat notas.txt', 'tail -n 5 /var/log/auth.log', 'grep Failed /var/log/auth.log | wc -l', 'ps aux', 'ss -tulpn', 'cat /etc/passwd'] : ['ipconfig', 'ipconfig /all', 'tasklist', 'netstat -ano', 'dir Downloads', 'net user', 'whoami'];
     wrap.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;min-width:0">
-      <div class="term"><div class="term-bar"><i></i><i></i><i></i><span>${os === 'linux' ? 'alfonso@web01 — bash' : 'Símbolo del sistema — PC-ALFONSO'}</span></div>
+      <div class="term"><div class="term-bar"><i></i><i></i><i></i><span>${os === 'linux' ? 'analista@web01 — bash' : 'Símbolo del sistema — PC-OFICINA01'}</span></div>
         <div class="term-out" aria-live="polite">${S.buf.join('\n')}</div>
         <form class="term-in${os === 'win' ? ' win' : ''}"><label for="term-input">${esc(TERM.prompt(S))}</label><input id="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="send"></form></div>
       <div class="row">${quick.map(q => `<button class="chip qk" style="cursor:pointer;font-family:var(--f-mono)">${esc(q)}</button>`).join('')}</div></div>

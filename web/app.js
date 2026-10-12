@@ -51,7 +51,7 @@ const ICONS = {
 };
 const SECTIONS = [
   ['inicio', 'Inicio'], ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'],
-  ['secplus', 'Security+'], ['cursos', 'Mis cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'],
+  ['secplus', 'Security+'], ['cursos', 'Cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'],
   ['imprevistos', 'Imprevistos'], ['progreso', 'Progreso']
 ];
 const VIEWS = {};

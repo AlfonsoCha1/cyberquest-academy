@@ -19,7 +19,7 @@ const SOC_SCN = [
     pro: 'Confirmar el compromiso, aislar web01 preservando evidencia, buscar la IP y los IoCs (la cuenta backup2, el puerto 4444) en los demás equipos, erradicar la persistencia, restaurar desde un respaldo limpio y endurecer SSH (sin root, con llaves y MFA, con fail2ban).',
     learn: 'Fases de respuesta a incidentes: identificar → contener → erradicar → recuperar → lecciones aprendidas. Nunca destruyas evidencia al contener.' },
   { id: 'soc2', area: 'SOC · Phishing', sev: 'media', title: 'Correo sospechoso del "banco"', sit: 'Un empleado reporta un correo urgente de "Soporte TI" pidiendo confirmar su contraseña en un enlace. El dominio del enlace es it-soporte-verificacion.com.',
-    log: 'De: Soporte TI <soporte@it-soporte-verificacion.com>\nAsunto: ACCIÓN URGENTE: su cuenta será suspendida\nEnlace: http://it-soporte-verificacion.com/login?u=alfonso',
+    log: 'De: Soporte TI <soporte@it-soporte-verificacion.com>\nAsunto: ACCIÓN URGENTE: su cuenta será suspendida\nEnlace: http://it-soporte-verificacion.com/login?u=empleado',
     steps: [
       { ask: '¿Qué tipo de ataque es?', opts: [
         { t: 'Phishing: suplanta a TI con urgencia para robar la contraseña', s: 2, fb: 'Correcto: dominio falso, urgencia y petición de credenciales. Clásico.' },

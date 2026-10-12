@@ -6,8 +6,8 @@ const TERM = (() => {
     const ts = () => { t += 7 + (L.length * 13) % 29; const hh = String(Math.floor(t / 3600)).padStart(2, '0'), mm = String(Math.floor(t / 60) % 60).padStart(2, '0'), ss = String(t % 60).padStart(2, '0'); return `Oct 12 ${hh}:${mm}:${ss}`; };
     const pid = () => 2000 + (L.length * 37) % 900;
     const port = () => 40000 + (L.length * 911) % 20000;
-    L.push(`${ts()} web01 sshd[${pid()}]: Accepted publickey for alfonso from 192.168.1.20 port ${port()} ssh2`);
-    L.push(`${ts()} web01 sshd[${pid()}]: pam_unix(sshd:session): session opened for user alfonso`);
+    L.push(`${ts()} web01 sshd[${pid()}]: Accepted publickey for analista from 192.168.1.20 port ${port()} ssh2`);
+    L.push(`${ts()} web01 sshd[${pid()}]: pam_unix(sshd:session): session opened for user analista`);
     const seq = [];
     for (let i = 0; i < 23; i++) seq.push(['root', '185.220.101.47']);
     for (let i = 0; i < 9; i++) seq.splice(3 + i * 3, 0, ['admin', '45.95.147.236']);
@@ -16,7 +16,7 @@ const TERM = (() => {
     L.push(`${ts()} web01 sshd[${pid()}]: Accepted password for root from 185.220.101.47 port ${port()} ssh2`);
     L.push(`${ts()} web01 sshd[${pid()}]: pam_unix(sshd:session): session opened for user root`);
     L.push(`${ts()} web01 useradd[${pid()}]: new user: name=backup2, UID=0, GID=0, home=/home/backup2, shell=/bin/bash`);
-    L.push(`${ts()} web01 sudo:  alfonso : TTY=pts/0 ; PWD=/home/alfonso ; USER=root ; COMMAND=/usr/bin/apt update`);
+    L.push(`${ts()} web01 sudo:  analista : TTY=pts/0 ; PWD=/home/analista ; USER=root ; COMMAND=/usr/bin/apt update`);
     return L.join('\n') + '\n';
   }
   const ACCESS = [
@@ -31,13 +31,13 @@ const TERM = (() => {
     '192.168.1.31 - - [12/Oct/2026:09:20:05] "POST /login.php HTTP/1.1" 302 0 "Mozilla/5.0"',
     '192.168.1.44 - - [12/Oct/2026:09:22:17] "GET /contacto HTTP/1.1" 200 1500 "Mozilla/5.0"'
   ].join('\n') + '\n';
-  const PASSWD = ['root:x:0:0:root:/root:/bin/bash', 'daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin', 'www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin', 'sshd:x:110:65534::/run/sshd:/usr/sbin/nologin', 'mysql:x:112:117:MySQL Server:/nonexistent:/bin/false', 'alfonso:x:1000:1000:Alfonso:/home/alfonso:/bin/bash', 'backup2:x:0:0::/home/backup2:/bin/bash'].join('\n') + '\n';
+  const PASSWD = ['root:x:0:0:root:/root:/bin/bash', 'daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin', 'www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin', 'sshd:x:110:65534::/run/sshd:/usr/sbin/nologin', 'mysql:x:112:117:MySQL Server:/nonexistent:/bin/false', 'analista:x:1000:1000:Analista:/home/analista:/bin/bash', 'backup2:x:0:0::/home/backup2:/bin/bash'].join('\n') + '\n';
   const LFS = {
-    '/home/alfonso/notas.txt': 'Pendientes del lunes:\n- Revisar alertas del SIEM\n- Parchar web01 (apache)\n- Cambiar contraseña de la impresora del 2do piso\n',
-    '/home/alfonso/.credenciales_viejas.txt': 'usuario: admin\npassword: Verano2019!\n# ¡Esto NO debería existir en texto plano!\n',
-    '/home/alfonso/.bash_history': 'ls -la\ncd /var/log\ntail auth.log\nsudo apt update\n',
-    '/home/alfonso/reportes/ventas_q3.csv': 'mes,region,monto\njulio,norte,120500\nagosto,norte,98000\nseptiembre,sur,143200\n',
-    '/home/alfonso/scripts/backup.sh': '#!/bin/bash\n# Respalda la carpeta de reportes con fecha\nFECHA=$(date +%F)\ntar -czf /backups/reportes_$FECHA.tar.gz /home/alfonso/reportes\necho "Respaldo listo: $FECHA"\n',
+    '/home/analista/notas.txt': 'Pendientes del lunes:\n- Revisar alertas del SIEM\n- Parchar web01 (apache)\n- Cambiar contraseña de la impresora del 2do piso\n',
+    '/home/analista/.credenciales_viejas.txt': 'usuario: admin\npassword: Verano2019!\n# ¡Esto NO debería existir en texto plano!\n',
+    '/home/analista/.bash_history': 'ls -la\ncd /var/log\ntail auth.log\nsudo apt update\n',
+    '/home/analista/reportes/ventas_q3.csv': 'mes,region,monto\njulio,norte,120500\nagosto,norte,98000\nseptiembre,sur,143200\n',
+    '/home/analista/scripts/backup.sh': '#!/bin/bash\n# Respalda la carpeta de reportes con fecha\nFECHA=$(date +%F)\ntar -czf /backups/reportes_$FECHA.tar.gz /home/analista/reportes\necho "Respaldo listo: $FECHA"\n',
     '/var/log/auth.log': authLog(),
     '/var/log/syslog': 'Oct 12 03:40:02 web01 CRON[3110]: (root) CMD (/tmp/.x/kworkerd -o pool.minexmr.example:4444)\nOct 12 04:00:01 web01 systemd[1]: Started Daily apt download activities.\n',
     '/var/log/apache2/access.log': ACCESS,
@@ -47,7 +47,7 @@ const TERM = (() => {
     '/tmp/.x/kworkerd': '\u007fELF (binario)\n',
     '/var/www/html/index.html': '<h1>Tienda Ejemplo</h1>\n'
   };
-  const LDIRS = ['/', '/home', '/home/alfonso', '/home/alfonso/reportes', '/home/alfonso/scripts', '/var', '/var/log', '/var/log/apache2', '/etc', '/etc/ssh', '/tmp', '/tmp/.x', '/var/www', '/var/www/html', '/root'];
+  const LDIRS = ['/', '/home', '/home/analista', '/home/analista/reportes', '/home/analista/scripts', '/var', '/var/log', '/var/log/apache2', '/etc', '/etc/ssh', '/tmp', '/tmp/.x', '/var/www', '/var/www/html', '/root'];
   const PS = `USER       PID %CPU %MEM COMMAND
 root         1  0.0  0.4 /sbin/init
 root       812  0.0  0.6 /usr/sbin/sshd -D
@@ -55,8 +55,8 @@ www-data  1022  0.3  2.1 /usr/sbin/apache2 -k start
 mysql     1101  0.8  6.5 /usr/sbin/mysqld
 root      3110 98.7 12.0 /tmp/.x/kworkerd -o pool.minexmr.example:4444
 root      3377  0.0  0.1 nc -lvnp 4444
-alfonso   3402  0.0  0.2 -bash
-alfonso   3460  0.0  0.1 ps aux
+analista   3402  0.0  0.2 -bash
+analista   3460  0.0  0.1 ps aux
 `;
   const SS = `Netid State  Local Address:Port  Peer Address:Port  Process
 tcp   LISTEN 0.0.0.0:22          0.0.0.0:*          users:(("sshd",pid=812))
@@ -73,7 +73,7 @@ tcp   LISTEN 0.0.0.0:4444        0.0.0.0:*          users:(("nc",pid=3377))
   const FAKEHASH = p => { let h1 = 0x811c9dc5; for (const c of p) h1 = Math.imul(h1 ^ c.charCodeAt(0), 16777619) >>> 0; let s = ''; for (let i = 0; i < 8; i++) { h1 = Math.imul(h1 ^ (i * 2654435761), 16777619) >>> 0; s += h1.toString(16).padStart(8, '0'); } return s; };
 
   /* ---------- contenido de Windows ---------- */
-  const W = 'C:\\Users\\alfonso';
+  const W = 'C:\\Users\\analista';
   const WFS = {
     [W + '\\Desktop\\nota.txt']: 'Recordar: no compartir la contraseña del Wi-Fi de la oficina.\r\n',
     [W + '\\Documents\\inventario.txt']: 'Laptop-Ventas-01  Dell  Win11\r\nLaptop-Conta-02   HP    Win10 (sin soporte en 2025!)\r\nImpresora-2P      Ricoh firmware 2019\r\n',
@@ -106,7 +106,7 @@ Adaptador de Ethernet Ethernet:
   const IPCONFIG_ALL = `
 Configuración IP de Windows
 
-   Nombre de host. . . . . . . . . : PC-ALFONSO
+   Nombre de host. . . . . . . . . : PC-OFICINA01
 
 Adaptador de Ethernet Ethernet:
 
@@ -123,7 +123,7 @@ Adaptador de Ethernet Ethernet:
 `;
   // Registro de seguridad de Windows (simulado): [fecha, id, mensaje]
   const WEVENTS = [
-    ['12/10/2026 08:02:30', 4624, 'Inicio de sesión correcto · Cuenta: alfonso · Tipo: 2 (en el teclado)'],
+    ['12/10/2026 08:02:30', 4624, 'Inicio de sesión correcto · Cuenta: analista · Tipo: 2 (en el teclado)'],
     ['12/10/2026 03:12:40', 4624, 'Inicio de sesión correcto · Cuenta: soporte_temp · Origen: 91.240.118.172 · Tipo: 10 (Escritorio remoto)'],
     ['12/10/2026 03:10:20', 4732, 'Miembro agregado a grupo · Grupo: Administradores · Cuenta agregada: soporte_temp · Por: Administrador'],
     ['12/10/2026 03:10:15', 4720, 'Cuenta de usuario creada · Cuenta nueva: soporte_temp · Creada por: Administrador'],
@@ -134,9 +134,9 @@ Adaptador de Ethernet Ethernet:
     ['12/10/2026 03:06:58', 4625, 'Error de inicio de sesión · Cuenta: Administrador · Origen: 91.240.118.172 · Tipo: 10'],
     ['12/10/2026 03:06:41', 4625, 'Error de inicio de sesión · Cuenta: administrator · Origen: 91.240.118.172 · Tipo: 10'],
     ['12/10/2026 03:06:20', 4625, 'Error de inicio de sesión · Cuenta: Administrador · Origen: 91.240.118.172 · Tipo: 10'],
-    ['11/10/2026 18:31:09', 4634, 'Cierre de sesión · Cuenta: alfonso']
+    ['11/10/2026 18:31:09', 4634, 'Cierre de sesión · Cuenta: analista']
   ];
-  const WPATH = { 'svchost.exe': 'C:\\Windows\\System32\\svchost.exe', 'explorer.exe': 'C:\\Windows\\explorer.exe', 'chrome.exe': 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', 'OneDrive.exe': 'C:\\Users\\alfonso\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe', 'svch0st.exe': 'C:\\Users\\alfonso\\AppData\\Roaming\\svch0st.exe', 'cmd.exe': 'C:\\Windows\\System32\\cmd.exe' };
+  const WPATH = { 'svchost.exe': 'C:\\Windows\\System32\\svchost.exe', 'explorer.exe': 'C:\\Windows\\explorer.exe', 'chrome.exe': 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', 'OneDrive.exe': 'C:\\Users\\analista\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe', 'svch0st.exe': 'C:\\Users\\analista\\AppData\\Roaming\\svch0st.exe', 'cmd.exe': 'C:\\Windows\\System32\\cmd.exe' };
   const PINGOK = { '8.8.8.8': '8.8.8.8', 'google.com': '142.250.72.14', '192.168.1.254': '192.168.1.254', '1.1.1.1': '1.1.1.1', 'localhost': '127.0.0.1', '127.0.0.1': '127.0.0.1', '192.168.1.10': '192.168.1.10' };
 
   /* ---------- utilidades ---------- */
@@ -157,16 +157,16 @@ Adaptador de Ethernet Ethernet:
 
   /* ---------- sesión ---------- */
   function create(os) {
-    const S = { os, cwd: os === 'linux' ? '/home/alfonso' : W, hist: [], perms: {}, killed: {} };
-    S.perms['/home/alfonso/scripts/backup.sh'] = '-rw-r--r--';
+    const S = { os, cwd: os === 'linux' ? '/home/analista' : W, hist: [], perms: {}, killed: {} };
+    S.perms['/home/analista/scripts/backup.sh'] = '-rw-r--r--';
     return S;
   }
-  const prompt = S => S.os === 'linux' ? `alfonso@web01:${S.cwd.replace('/home/alfonso', '~')}$` : `${S.cwd}>`;
+  const prompt = S => S.os === 'linux' ? `analista@web01:${S.cwd.replace('/home/analista', '~')}$` : `${S.cwd}>`;
 
   /* ---------- Linux ---------- */
   function lres(S, p) {
-    if (!p || p === '~') return '/home/alfonso';
-    if (p.startsWith('~/')) p = '/home/alfonso/' + p.slice(2);
+    if (!p || p === '~') return '/home/analista';
+    if (p.startsWith('~/')) p = '/home/analista/' + p.slice(2);
     const parts = (p.startsWith('/') ? p : S.cwd + '/' + p).split('/');
     const st = []; for (const x of parts) { if (!x || x === '.') continue; if (x === '..') st.pop(); else st.push(x); }
     return '/' + st.join('/');
@@ -184,8 +184,8 @@ Adaptador de Ethernet Ethernet:
   const LCMD = {
     help: () => 'Comandos disponibles: pwd ls cd cat head tail grep wc sort uniq cut awk find whoami id hostname uname date echo ps ss netstat ip ping history chmod sha256sum sudo clear man\nUsa | para encadenar: grep "Failed" /var/log/auth.log | wc -l\nEscribe man <comando> para ver qué hace.',
     pwd: S => S.cwd,
-    whoami: () => 'alfonso',
-    id: () => 'uid=1000(alfonso) gid=1000(alfonso) grupos=1000(alfonso),27(sudo)',
+    whoami: () => 'analista',
+    id: () => 'uid=1000(analista) gid=1000(analista) grupos=1000(analista),27(sudo)',
     hostname: () => 'web01',
     uname: (S, a) => a.includes('-a') ? 'Linux web01 6.8.0-45-generic #45-Ubuntu SMP x86_64 GNU/Linux' : 'Linux',
     date: () => 'lun 12 oct 2026 15:30:00 CST',
@@ -201,11 +201,11 @@ Adaptador de Ethernet Ethernet:
     ls: (S, a) => {
       const flags = a.filter(x => x.startsWith('-')).join(''), args = a.filter(x => !x.startsWith('-'));
       const p = lres(S, args[0] || '.');
-      if (lIsFile(p)) return flags.includes('l') ? `${lperm(S, p, false)} 1 alfonso alfonso ${String(LFS[p].length).padStart(5)} oct 12 09:00 ${args[0]}` : args[0];
+      if (lIsFile(p)) return flags.includes('l') ? `${lperm(S, p, false)} 1 analista analista ${String(LFS[p].length).padStart(5)} oct 12 09:00 ${args[0]}` : args[0];
       if (!lIsDir(p)) return { e: `ls: no se puede acceder a '${args[0]}': No existe el archivo o el directorio` };
       if (p === '/root') return { e: "ls: no se puede abrir el directorio '/root': Permiso denegado" };
       let items = lChildren(p); if (!flags.includes('a')) items = items.filter(([n]) => !n.startsWith('.'));
-      if (flags.includes('l')) return items.map(([n, d]) => { const full = (p === '/' ? '' : p) + '/' + n; return `${lperm(S, full, d)} 1 ${p.startsWith('/home') ? 'alfonso alfonso' : 'root    root   '} ${String(d ? 4096 : LFS[full].length).padStart(5)} oct 12 09:00 ${n}${d ? '/' : ''}`; }).join('\n');
+      if (flags.includes('l')) return items.map(([n, d]) => { const full = (p === '/' ? '' : p) + '/' + n; return `${lperm(S, full, d)} 1 ${p.startsWith('/home') ? 'analista analista' : 'root     root    '} ${String(d ? 4096 : LFS[full].length).padStart(5)} oct 12 09:00 ${n}${d ? '/' : ''}`; }).join('\n');
       return items.map(([n, d]) => n + (d ? '/' : '')).join('  ');
     },
     cat: (S, a, inp) => { if (!a.length) return inp || ''; const out = []; for (const f of a) { const r = lread(S, f); if (r.e) return { e: 'cat: ' + r.e }; out.push(r.t.replace(/\n$/, '')); } return out.join('\n'); },
@@ -254,8 +254,8 @@ Adaptador de Ethernet Ethernet:
     cls: () => ({ clear: true }),
     ver: () => 'Microsoft Windows [Versión 10.0.22631.4317]',
     echo: (S, a) => a.join(' '),
-    hostname: () => 'PC-ALFONSO',
-    whoami: (S, a) => a.includes('/priv') ? 'Privilegio                     Estado\nSeChangeNotifyPrivilege        Habilitada\nSeShutdownPrivilege            Deshabilitado' : 'pc-alfonso\\alfonso',
+    hostname: () => 'PC-OFICINA01',
+    whoami: (S, a) => a.includes('/priv') ? 'Privilegio                     Estado\nSeChangeNotifyPrivilege        Habilitada\nSeShutdownPrivilege            Deshabilitado' : 'pc-oficina01\\analista',
     cd: (S, a) => { if (!a.length) return S.cwd; const p = wres(S, a.join(' ')); const d = wfind(WDIRS, p); if (!d) return { e: 'El sistema no puede encontrar la ruta especificada.' }; S.cwd = d; return ''; },
     dir: (S, a) => {
       const p = wres(S, a.filter(x => !x.startsWith('/')).join(' ') || '.'); const d = wfind(WDIRS, p);
@@ -273,8 +273,8 @@ Adaptador de Ethernet Ethernet:
     netstat: S => NETSTAT.split('\n').filter(l => !Object.keys(S.killed).some(pid => l.trim().endsWith(' ' + pid))).join('\n').trim(),
     tasklist: S => 'Nombre de imagen               PID Uso de memoria\n========================= ======== ==============\n' + TASKS.filter(t => !S.killed[t[1]]).map(t => t[0].padEnd(25) + String(t[1]).padStart(9) + ' ' + t[2].padStart(14)).join('\n'),
     taskkill: (S, a) => { const i = a.findIndex(x => x.toLowerCase() === '/pid'); const pid = i >= 0 ? +a[i + 1] : NaN; const t = TASKS.find(x => x[1] === pid); if (!t || S.killed[pid]) return { e: `Error: no se encontró el proceso "${a[i + 1] || ''}".` }; if (pid === 4) return { e: 'Error: acceso denegado. Es un proceso crítico del sistema.' }; S.killed[pid] = 1; return `Correcto: se terminó el proceso con PID ${pid} (${t[0]}).${pid === 4321 ? '\nAntes de matar un proceso sospechoso en un trabajo real: aísla el equipo y guarda evidencia (memoria, hash del archivo).' : ''}`; },
-    net: (S, a) => { const s = a.map(x => x.toLowerCase()).join(' '); if (s === 'user') return 'Cuentas de usuario de \\\\PC-ALFONSO\n-------------------------------------------------------------------------------\nAdministrador            alfonso                  Invitado\nsoporte_temp\nSe ha completado el comando correctamente.'; if (s.startsWith('localgroup administradores') || s.startsWith('localgroup administrators')) return 'Nombre de alias     Administradores\n-------------------------------------------------------------------------------\nAdministrador\nalfonso\nsoporte_temp\nSe ha completado el comando correctamente.'; if (s.startsWith('user soporte_temp')) return 'Nombre de usuario          soporte_temp\nCuenta activa              Sí\nÚltima contraseña establecida  03/10/2026\nÚltimo inicio de sesión     12/10/2026 03:12:40\nMiembros del grupo local   *Administradores'; return 'Uso: net user | net user <usuario> | net localgroup administradores'; },
-    systeminfo: () => 'Nombre de host:            PC-ALFONSO\nNombre del sistema operativo: Microsoft Windows 11 Pro\nVersión del sistema operativo: 10.0.22631 N/D Compilación 22631\nRevisiones:                3 revisiones instaladas.\nTarjeta(s) de red:         1 Tarjetas de interfaz de red instaladas.',
+    net: (S, a) => { const s = a.map(x => x.toLowerCase()).join(' '); if (s === 'user') return 'Cuentas de usuario de \\\\PC-OFICINA01\n-------------------------------------------------------------------------------\nAdministrador            analista                  Invitado\nsoporte_temp\nSe ha completado el comando correctamente.'; if (s.startsWith('localgroup administradores') || s.startsWith('localgroup administrators')) return 'Nombre de alias     Administradores\n-------------------------------------------------------------------------------\nAdministrador\nanalista\nsoporte_temp\nSe ha completado el comando correctamente.'; if (s.startsWith('user soporte_temp')) return 'Nombre de usuario          soporte_temp\nCuenta activa              Sí\nÚltima contraseña establecida  03/10/2026\nÚltimo inicio de sesión     12/10/2026 03:12:40\nMiembros del grupo local   *Administradores'; return 'Uso: net user | net user <usuario> | net localgroup administradores'; },
+    systeminfo: () => 'Nombre de host:            PC-OFICINA01\nNombre del sistema operativo: Microsoft Windows 11 Pro\nVersión del sistema operativo: 10.0.22631 N/D Compilación 22631\nRevisiones:                3 revisiones instaladas.\nTarjeta(s) de red:         1 Tarjetas de interfaz de red instaladas.',
     findstr: (S, a, inp) => { const fl = a.filter(x => /^\/[a-z]$/i.test(x)).map(x => x.toLowerCase()); const rest = a.filter(x => !/^\/[a-z]$/i.test(x)); const pat = rest[0]; if (pat == null) return { e: 'Uso: findstr "texto" archivo' }; const src = rest[1] ? wread(S, rest[1]) : { t: inp || '' }; if (src.e) return { e: src.e }; const ci = fl.includes('/i'), words = pat.split(' ').filter(Boolean); const res = src.t.replace(/\r/g, '').split('\n').filter(l => words.some(w => ci ? l.toLowerCase().includes(w.toLowerCase()) : l.includes(w))); return (fl.includes('/v') ? src.t.replace(/\r/g, '').split('\n').filter(l => !res.includes(l)) : res).join('\n'); },
     find: (S, a, inp) => { const c = a.some(x => x.toLowerCase() === '/c'); const pat = a.find(x => !x.startsWith('/')); if (!pat) return { e: 'Uso: find "texto" archivo' }; const f = a.filter(x => !x.startsWith('/'))[1]; const src = f ? wread(S, f) : { t: inp || '' }; if (src.e) return { e: src.e }; const res = src.t.replace(/\r/g, '').split('\n').filter(l => l.includes(pat)); return c ? String(res.length) : res.join('\n'); },
     /* ----- PowerShell (cmdlets más usados en soporte y en un SOC) ----- */
@@ -308,8 +308,8 @@ Adaptador de Ethernet Ethernet:
       return `ComputerName     : ${host}\nRemoteAddress    : ${ip}\n` + (port ? `RemotePort       : ${port}\nInterfaceAlias   : Ethernet\nSourceAddress    : 192.168.1.20\nTcpTestSucceeded : ${['80', '443', '53'].includes(port) ? 'True' : 'False'}` : `InterfaceAlias   : Ethernet\nSourceAddress    : 192.168.1.20\nPingSucceeded    : True\nPingReplyDetails (RTT) : 15 ms`);
     },
     'resolve-dnsname': (S, a) => { const n = (a.find(x => !x.startsWith('-')) || '').toLowerCase(); if (!n) return { e: 'Uso: Resolve-DnsName google.com' }; const ip = n.includes('bancomex') ? '200.57.10.5' : PINGOK[n] || '142.250.72.14'; return `Name             Type   TTL   Section    IPAddress\n----             ----   ---   -------    ---------\n${n.padEnd(16)} A      300   Answer     ${ip}`; },
-    'get-localuser': () => 'Name          Enabled Description\n----          ------- -----------\nAdministrador True    Cuenta integrada para administrar el equipo\nalfonso       True\nInvitado      False   Cuenta integrada para acceso de invitados\nsoporte_temp  True    Soporte temporal',
-    'get-localgroupmember': (S, a) => { const g = (a.find(x => !x.startsWith('-')) || '').toLowerCase(); if (!/^administ/.test(g)) return { e: 'Uso: Get-LocalGroupMember Administradores' }; return 'ObjectClass Name                       PrincipalSource\n----------- ----                       ---------------\nUsuario     PC-ALFONSO\\Administrador   Local\nUsuario     PC-ALFONSO\\alfonso         Local\nUsuario     PC-ALFONSO\\soporte_temp    Local'; },
+    'get-localuser': () => 'Name          Enabled Description\n----          ------- -----------\nAdministrador True    Cuenta integrada para administrar el equipo\nanalista      True\nInvitado      False   Cuenta integrada para acceso de invitados\nsoporte_temp  True    Soporte temporal',
+    'get-localgroupmember': (S, a) => { const g = (a.find(x => !x.startsWith('-')) || '').toLowerCase(); if (!/^administ/.test(g)) return { e: 'Uso: Get-LocalGroupMember Administradores' }; return 'ObjectClass Name                        PrincipalSource\n----------- ----                        ---------------\nUsuario     PC-OFICINA01\\Administrador  Local\nUsuario     PC-OFICINA01\\analista       Local\nUsuario     PC-OFICINA01\\soporte_temp   Local'; },
     'get-winevent': (S, a) => {
       const s = a.join(' '); if (!/security|seguridad/i.test(s)) return { e: 'Simulador: solo está el registro Security. Ejemplo: Get-WinEvent -LogName Security -MaxEvents 10' };
       const im = s.match(/Id\s*=\s*([\d,\s]+)/i), mm = s.match(/-MaxEvents\s+(\d+)/i);
@@ -319,7 +319,7 @@ Adaptador de Ethernet Ethernet:
       return 'TimeCreated            Id Message\n-----------            -- -------\n' + rows.map(e => `${e[0]} ${String(e[1]).padStart(5)} ${e[2]}`).join('\n');
     },
     'get-eventlog': (S, a) => { const i = a.findIndex(x => /^-instanceid$/i.test(x)); return WCMD['get-winevent'](S, ['-LogName', 'Security'].concat(i >= 0 ? ['Id=' + a[i + 1]] : [])); },
-    'get-scheduledtask': () => 'TaskName                   State   Ejecuta (simulador)\n--------                   -----   -------------------\nMicrosoftEdgeUpdateCore    Ready   C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\MicrosoftEdgeUpdate.exe\nOneDrive Standalone Update Ready   C:\\Users\\alfonso\\AppData\\Local\\Microsoft\\OneDrive\\OneDriveStandaloneUpdater.exe\nWindowsUpdateHelper        Ready   C:\\Users\\alfonso\\AppData\\Roaming\\svch0st.exe\n\n(En Windows real la ruta se ve con (Get-ScheduledTask -TaskName X).Actions)',
+    'get-scheduledtask': () => 'TaskName                   State   Ejecuta (simulador)\n--------                   -----   -------------------\nMicrosoftEdgeUpdateCore    Ready   C:\\Program Files (x86)\\Microsoft\\EdgeUpdate\\MicrosoftEdgeUpdate.exe\nOneDrive Standalone Update Ready   C:\\Users\\analista\\AppData\\Local\\Microsoft\\OneDrive\\OneDriveStandaloneUpdater.exe\nWindowsUpdateHelper        Ready   C:\\Users\\analista\\AppData\\Roaming\\svch0st.exe\n\n(En Windows real la ruta se ve con (Get-ScheduledTask -TaskName X).Actions)',
     'get-filehash': (S, a) => { const p = a.filter(x => !x.startsWith('-') && !/^(sha256|md5|sha1)$/i.test(x)).join(' '); if (!p) return { e: 'Uso: Get-FileHash .\\archivo.exe' }; const full = /svch0st/i.test(p) ? WPATH['svch0st.exe'] : wFile(wres(S, p)); if (!full) return { e: `Get-FileHash : No se encuentra la ruta '${p}' porque no existe.` }; return `Algorithm Hash${' '.repeat(60)} Path\n--------- ----${' '.repeat(60)} ----\nSHA256    ${FAKEHASH(full).toUpperCase()} ${full}`; },
     'get-childitem': (S, a) => WCMD.dir(S, a.filter(x => !/^-(force|recurse)$/i.test(x))),
     'get-content': (S, a, inp) => WCMD.type(S, a, inp),

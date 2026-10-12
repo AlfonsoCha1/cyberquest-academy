@@ -4,7 +4,7 @@ Academia de ciberseguridad para **aprender practicando**: armas redes y las arre
 
 **App:** https://cyberquest-academy.vercel.app · **API:** https://cyberquest-api-1h1g.onrender.com/health
 
-> Proyecto personal de aprendizaje de Alfonso Chavarín. Todo ocurre en simulaciones dentro del navegador: nada toca equipos o redes reales.
+> Academia abierta y gratuita para aprender ciberseguridad en comunidad: sin cuentas, sin anuncios y sin datos personales. Todo ocurre en simulaciones dentro del navegador: nada toca equipos o redes reales.
 
 ## Qué trae
 
@@ -14,7 +14,7 @@ Academia de ciberseguridad para **aprender practicando**: armas redes y las arre
 | **Terminal** | Linux (servidor web atacado, 9 retos) y Windows CMD + PowerShell (PC comprometida, 8 retos): fuerza bruta, cuentas persistentes, procesos impostores, archivo hosts falso, eventos 4625/4624/4720/4732. |
 | **Comandos** | Fichas de Linux, CMD y PowerShell: qué significan, qué hacen, ejemplo y uso en seguridad, con mini examen. |
 | **Security+ SY0-701** | Los 5 dominios con teoría, preguntas con explicación, simulacro y proyecto integral. |
-| **Mis cursos** | Google (Coursera), Cisco NetAcad, AWS, Linux y Docker: conceptos, código explicado y cómo contarlo en una entrevista. |
+| **Cursos** | Temario de cursos recomendados (Google, Cisco NetAcad, AWS, Linux y Docker): conceptos, código explicado y cómo contarlo en una entrevista. |
 | **Ramas, SOC e Imprevistos** | 12 especialidades, alertas con logs para decidir qué hacer y problemas que no vienen en el curso pero sí en el trabajo. |
 | **Progreso** | XP, rangos, repaso de errores, exportar/borrar datos y sincronizar entre dispositivos con un código. |
 
@@ -91,6 +91,12 @@ Render Free duerme el servicio a los 15 min sin tráfico y da **750 horas al mes
 3. Al abrir la app, ella misma despierta al API.
 
 Sin `DATABASE_URL`, la sincronización vive en un archivo temporal: Render lo borra al reiniciar o redesplegar. Tu progreso **siempre** queda en cada dispositivo; si se pierde la copia en la nube, solo vuelve a subirla. Para guardarla para siempre conecta un Postgres gratuito que no caduque (por ejemplo Neon) en `DATABASE_URL`. El Postgres gratis de Render caduca a los 30 días.
+
+## Para la comunidad
+
+- Compártela con quien esté empezando: solo necesitan el enlace, no hay registro.
+- Cada persona lleva su propio progreso en su navegador. Nadie ve el avance de otros.
+- ¿Encontraste un error o tienes un caso real que debería estar aquí? Abre un *issue* con la descripción y lo agregamos.
 
 ## Seguridad
 
