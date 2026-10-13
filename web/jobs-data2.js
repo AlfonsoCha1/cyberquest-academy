@@ -1,12 +1,11 @@
-/* ===== Vacantes reales para prepararse (resumen propio de lo publicado) ===== */
+/* ===== Vacante de EJEMPLO totalmente ficticia (empresa, puesto y datos inventados) ===== */
 const JOBS = [
   {
-    id: 'engie-2026-68245',
-    titulo: 'Especialista Sr. de Ciberseguridad (IT & AI Security)',
-    empresa: 'ENGIE México', lugar: 'Ciudad de México', area: 'Digital / IT / Datos',
-    sueldo: '$38,000 a $46,000 MXN al mes (rango publicado)', contrato: 'Permanente, tiempo completo',
-    publicada: '2 de octubre de 2026',
-    url: 'https://jobs.engie.com/job/Especialista-en-Ciberseguridad/68245-es_MX/',
+    id: 'ejemplo-ficticio',
+    titulo: 'Analista de Ciberseguridad (ejemplo)',
+    empresa: 'Empresa Ejemplo (ficticia)', lugar: 'Ciudad ficticia', area: 'Digital / IT / Datos',
+    sueldo: 'Sueldo de ejemplo', contrato: 'Permanente, tiempo completo',
+    publicada: 'Ejemplo inventado',
     mision: 'Proteger los activos digitales operando controles de ciberseguridad en TI corporativa, detectar y responder a amenazas, llevar prácticas seguras a la nube y a la IA, y explicar los riesgos en términos de negocio.',
     responsabilidades: [
       ['Monitorear eventos con SIEM y EDR y llevar el ciclo de incidentes de la detección al seguimiento.', ['siem', 'edr', 'ir']],
@@ -16,9 +15,9 @@ const JOBS = [
       ['Alinear con las políticas corporativas de ciberseguridad y apoyar auditorías y evaluaciones de riesgo.', ['grc']]
     ],
     tecnicos: [['Seguridad en entornos de TI corporativos', ['hardening', 'redes']], ['Monitoreo y respuesta a incidentes con SIEM y EDR', ['siem', 'edr', 'ir']], ['Gestión de vulnerabilidades', ['vuln']], ['Seguridad en Microsoft 365', ['m365']], ['IAM (identidades y accesos)', ['iam']], ['Zero Trust', ['zt']], ['Protección de datos con DLP', ['dlp']], ['Riesgos del uso de IA', ['ia']], ['Seguridad de aplicaciones SaaS y nube', ['cloud']], ['Gestión de la superficie de ataque', ['asm']]],
-    perfil: 'Ingeniería o licenciatura en Sistemas Computacionales, Informática o afín. Mínimo 3 años en un puesto igual y 5 años de experiencia laboral total.',
+    perfil: 'Ingeniería o licenciatura en Sistemas Computacionales, Informática o afín. Ejemplo: 3 años en un puesto igual y 5 años de experiencia laboral total.',
     competencias: ['Ejecución y orientación a resultados', 'Comunicación efectiva', 'Trabajo en equipo y colaboración entre áreas', 'Análisis y priorización', 'Adaptabilidad', 'Aprendizaje rápido', 'Organización y seguimiento'],
-    nota: 'La publicación no menciona certificaciones, marcos (ISO 27001, NIST) ni idiomas. En empresas globales el inglés suele usarse en el día a día: conviene practicar la entrevista también en inglés.',
+    nota: 'Esta vacante de ejemplo no menciona certificaciones, marcos (ISO 27001, NIST) ni idiomas. En empresas globales el inglés suele usarse en el día a día: conviene practicar la entrevista también en inglés.',
     ruta: [
       ['Simulador SOC: todos los casos', 'soc', 'Es lo que harás a diario: triage y respuesta.'],
       ['Terminal Windows con PowerShell: los 8 retos', 'terminal', 'Investigar un equipo como lo harías con un EDR.'],
@@ -31,7 +30,7 @@ const JOBS = [
     ],
     extra: [
       ['Te piden 3 años en el puesto y tienes menos. ¿Cómo lo respondes?', 'Soy honesto con mis años, pero muestro lo que ya hago a ese nivel: laboratorios de SOC, investigación de logs, gestión de vulnerabilidades y proyectos propios documentados, más mi experiencia relacionada en soporte, redes o TI. Y explico qué aprendería primero en el puesto.'],
-      ['¿Por qué ciberseguridad en una empresa de energía?', 'Porque la energía es infraestructura crítica: un incidente no solo afecta datos, también la operación. Me interesa proteger servicios que la gente usa todos los días y aprender de un entorno global.']
+      ['¿Por qué ciberseguridad en una empresa de infraestructura?', 'Porque la infraestructura crítica (energía, agua, transporte): un incidente no solo afecta datos, también la operación. Me interesa proteger servicios que la gente usa todos los días y aprender de un entorno global.']
     ],
     quiz: [
       ['Una alerta del EDR indica que Word lanzó PowerShell con un comando codificado. ¿Qué haces primero?', ['Revisar el árbol de procesos y, si es malicioso, aislar el equipo', 'Ignorarla porque Word es confiable', 'Reiniciar el servidor de correo', 'Desinstalar Office en toda la empresa'], 'Validar y contener rápido: aislar conserva la evidencia.'],

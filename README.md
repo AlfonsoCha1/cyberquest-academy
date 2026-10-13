@@ -118,6 +118,6 @@ Sin `DATABASE_URL`, la sincronización vive en un archivo temporal: Render lo bo
 4. Diplomas internos en PDF.
 5. Laboratorios de AWS, Docker, VLANs y ACLs.
 
-## Aviso
+## Aviso legal
 
-Material educativo original. Los cursos mencionados (Google/Coursera, Cisco NetAcad, CompTIA, Udemy) son referencias de estudio; este proyecto no está afiliado a ellos y no incluye sus materiales ni exámenes.
+Material educativo original. Los ejemplos (empresas, vacantes, datos) son ficticios. Consulta los términos de servicio y el aviso de privacidad dentro de la app (menú lateral). Los cursos mencionados (Google/Coursera, Cisco NetAcad, CompTIA, Udemy) son referencias de estudio; este proyecto no está afiliado a ellos y no incluye sus materiales ni exámenes.

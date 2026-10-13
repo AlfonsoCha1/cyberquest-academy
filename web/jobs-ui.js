@@ -77,7 +77,7 @@ VIEWS.vacantes = function (view) {
     g.innerHTML = JOBS.map(j => { const st = J[j.id] || { steps: {} }; const d = Object.keys(st.steps || {}).length; return `<button class="tile" data-j="${j.id}"><div class="row" style="justify-content:space-between"><span class="chip plasma">${esc(j.empresa)}</span><span class="chip">${d}/${j.ruta.length} pasos</span></div><h3>${esc(j.titulo)}</h3><p>${esc(j.lugar)} · ${esc(j.sueldo)}</p></button>`; }).join('');
     $$('.tile', g).forEach(b => b.addEventListener('click', () => job(JOBS.find(j => j.id === b.dataset.j))));
     host.appendChild(g);
-    host.appendChild(h('<p class="muted" style="font-size:.88rem">Esta es solo una vacante de ejemplo para mostrar cómo se desglosa. Para la tuya, pégala en "Analizar una vacante": funciona con cualquier puesto.</p>'));
+    host.appendChild(h('<p class="muted" style="font-size:.88rem">Esta vacante es totalmente inventada (empresa y datos ficticios) y solo muestra cómo se desglosa. Para la tuya, pégala en "Analizar una vacante": funciona con cualquier puesto.</p>'));
   }
   function job(j) {
     host.innerHTML = ''; window.scrollTo(0, 0);
@@ -85,7 +85,7 @@ VIEWS.vacantes = function (view) {
     const skillChips = ids => ids.map(id => { const s = skillById(id); const [cls] = skillStatus(s); return `<span class="chip ${cls}">${esc(s.n)}</span>`; }).join('');
     const allSkills = [...new Set(j.tecnicos.flatMap(t => t[1]))].map(skillById);
     const box = h(`<article class="view" style="gap:14px">
-      <div class="row"><button class="btn small back" type="button">← Ejemplo</button><a class="btn small" href="${esc(j.url)}" target="_blank" rel="noopener">Ver vacante original ↗</a></div>
+      <div class="row"><button class="btn small back" type="button">← Ejemplo</button><span class="chip warn">Vacante inventada</span></div>
       <section class="panel hero"><span class="eyebrow">${esc(j.empresa)} · ${esc(j.lugar)}</span><h2>${esc(j.titulo)}</h2>
         <p>${esc(j.mision)}</p><div class="row"><span class="chip">${esc(j.sueldo)}</span><span class="chip">${esc(j.contrato)}</span><span class="chip">Publicada: ${esc(j.publicada)}</span></div></section>
       <section class="panel"><h3>Qué harías</h3><ul class="list">${j.responsabilidades.map(([t, ids]) => `<li>${esc(t)}<div class="row" style="margin-top:4px">${skillChips(ids)}</div></li>`).join('')}</ul></section>
