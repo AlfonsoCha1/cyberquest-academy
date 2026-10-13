@@ -14,7 +14,7 @@ Academia de ciberseguridad para **aprender practicando**: armas redes y las arre
 | **Terminal** | Linux (servidor web atacado, 9 retos) y Windows CMD + PowerShell (PC comprometida, 8 retos): fuerza bruta, cuentas persistentes, procesos impostores, archivo hosts falso, eventos 4625/4624/4720/4732. |
 | **Comandos** | Fichas de Linux, CMD y PowerShell: qué significan, qué hacen, ejemplo y uso en seguridad, con mini examen. |
 | **Bases de datos** | SQL, PostgreSQL y SQLite con una base **real** en el navegador (SQLite vía sql.js): 12 lecciones con ejercicio y mini examen, consola con comandos `\dt`/`.tables`, 10 retos de investigación que se califican solos y examen final con resultado por tema. |
-| **Vacantes** | Pega una vacante y ve qué habilidades pide, cuáles ya practicas aquí y qué te falta. Vacantes reales desglosadas con ruta de estudio, temas extra (EDR, Microsoft 365, DLP, IA, superficie de ataque, SaaS) y preguntas de entrevista. |
+| **Vacantes** | Pega una vacante y ve qué habilidades pide, cuáles ya practicas aquí y qué te falta. Un ejemplo de vacante desglosado con ruta de estudio, temas extra (EDR, Microsoft 365, DLP, IA, superficie de ataque, SaaS) y preguntas de entrevista. |
 | **Security+ SY0-701** | Los 5 dominios con teoría, preguntas con explicación, simulacro y proyecto integral. |
 | **Cursos** | Temario de cursos recomendados (Google, Cisco NetAcad, AWS, Linux y Docker): conceptos, código explicado y cómo contarlo en una entrevista. |
 | **Ramas, SOC e Imprevistos** | 12 especialidades, alertas con logs para decidir qué hacer y problemas que no vienen en el curso pero sí en el trabajo. |

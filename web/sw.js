@@ -1,7 +1,7 @@
 /* Service worker: guarda la app para abrirla rápido y sin Internet.
    Estrategia: responde desde la caché al instante y actualiza en segundo plano
    (la versión nueva aparece la siguiente vez que abras la app). */
-const CACHE = 'cyberquest-v3';
+const CACHE = 'cyberquest-v4';
 const SHELL = [
   './', 'index.html', 'style.css', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/favicon.svg',
   'config.js', 'app.js', 'engine.js', 'term-engine.js', 'netlab-data.js', 'cmds-data.js', 'courses-data.js', 'branches-data.js',

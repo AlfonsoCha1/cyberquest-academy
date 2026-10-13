@@ -18,7 +18,7 @@ VIEWS.inicio = function (view) {
     ['cursos', 'Cursos', 'Google, Cisco, AWS, Linux y Docker: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
     ['ramas', 'Las 12 ramas', 'SOC, forense, nube, criptografía y más: conceptos, herramientas y quiz.', `${BRANCHES.length} ramas`],
     ['soc', 'Simulador SOC', 'Alertas con logs reales. Decide qué harías y compáralo con un profesional.', `${SOC_SCN.length} casos`],
-    ['vacantes', 'Vacantes', 'Pega una vacante y ve qué te falta. Vacantes reales con ruta de estudio, temas extra y preguntas de entrevista.', `${JOBS.length} vacante${JOBS.length > 1 ? 's' : ''}`],
+    ['vacantes', 'Vacantes', 'Pega cualquier vacante y ve qué habilidades pide y qué te falta. Incluye un ejemplo desglosado y temas que suelen pedir.', 'Cualquier puesto'],
     ['imprevistos', 'Imprevistos', 'Lo que no viene en el curso pero pasa en el trabajo. Practica reaccionar.', `${IMPREVISTOS.length} casos`]
   ];
   view.appendChild(h(`<div class="head">
@@ -145,6 +145,7 @@ VIEWS.ramas = function (view) {
     wrap.appendChild(h(`<div class="grid"><div class="panel"><h3>En el día a día</h3><ul class="list">${b.dia.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
       <div class="panel"><h3>Conceptos clave</h3><dl class="dl">${b.conceptos.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
       <div class="panel"><h3>Herramientas</h3><div class="row">${b.tools.map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div><h3 style="margin-top:8px">Hacia dónde lleva</h3><p>${esc(b.roles)}</p><p class="muted" style="font-size:.85rem">Certificaciones: ${esc(b.certs)}</p></div></div>`));
+    wrap.insertBefore(h(`<div class="panel hero"><h3>Qué hacer ahora</h3><ol class="list"><li><b>Lee</b> "En el día a día" y los conceptos clave de abajo (5 min).</li>${b.links && b.links.length ? '<li><b>Practica</b> con los botones de "Practícala aquí".</li>' : ''}<li><b>Contesta el quiz</b> al final: con 80% o más la rama queda marcada como dominada.</li><li><b>Repasa</b> lo que falles en Progreso y pasa a la siguiente rama.</li></ol></div>`), wrap.children[1].nextSibling);
     if (b.links && b.links.length) wrap.appendChild(h(`<div class="panel"><h3>Practícala aquí</h3><div class="row">${b.links.map(([k, t]) => `<a class="btn small" href="#${k}">${esc(t)} →</a>`).join('')}</div></div>`));
     wrap.appendChild(h(`<div class="row"><span class="eyebrow">Quiz de ${esc(b.name)}</span></div>`));
     const qbox = h('<div class="panel"></div>'); wrap.appendChild(qbox);

@@ -357,3 +357,6 @@ html.lite .canvas-wrap { background-image: none; }
 
 .view { width: 100%; }
 .view, .view > * { min-width: 0; }
+
+/* Respeta el atributo hidden aunque la clase defina display */
+[hidden]{display:none!important}
