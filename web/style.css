@@ -250,9 +250,9 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 60; pointer-event
 .brand b { background: linear-gradient(90deg, #fff, var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .brand span { color: var(--neon); text-shadow: 0 0 10px rgba(255,61,242,.6); }
 .nav-i { position: relative; }
-.nav-i:nth-child(10n+1) { --hue: var(--cyan); } .nav-i:nth-child(10n+2) { --hue: var(--volt); } .nav-i:nth-child(10n+3) { --hue: var(--ok); }
-.nav-i:nth-child(10n+4) { --hue: var(--lime); } .nav-i:nth-child(10n+5) { --hue: var(--plasma); } .nav-i:nth-child(10n+6) { --hue: var(--warn); }
-.nav-i:nth-child(10n+7) { --hue: var(--neon); } .nav-i:nth-child(10n+8) { --hue: var(--bad); } .nav-i:nth-child(10n+9) { --hue: #ff8a3d; } .nav-i:nth-child(10n+10) { --hue: var(--cyan); }
+.nav-i:nth-of-type(10n+1) { --hue: var(--cyan); } .nav-i:nth-of-type(10n+2) { --hue: var(--volt); } .nav-i:nth-of-type(10n+3) { --hue: var(--ok); }
+.nav-i:nth-of-type(10n+4) { --hue: var(--lime); } .nav-i:nth-of-type(10n+5) { --hue: var(--plasma); } .nav-i:nth-of-type(10n+6) { --hue: var(--warn); }
+.nav-i:nth-of-type(10n+7) { --hue: var(--neon); } .nav-i:nth-of-type(10n+8) { --hue: var(--bad); } .nav-i:nth-of-type(10n+9) { --hue: #ff8a3d; } .nav-i:nth-of-type(10n+10) { --hue: var(--cyan); }
 .nav-i svg, .nav-i .ico { stroke: var(--hue); opacity: .8; }
 .nav-i:hover { background: rgba(255,255,255,.04); color: var(--ink); }
 .nav-i[aria-current="page"] { color: #fff; background: linear-gradient(90deg, color-mix(in srgb, var(--hue) 26%, transparent), transparent 85%); border-color: color-mix(in srgb, var(--hue) 45%, transparent); }
@@ -420,3 +420,24 @@ a.tab { text-decoration: none; display: inline-block; }
 .wd.n3 { border-color: var(--ok); color: #04021a; background: var(--ok); box-shadow: 0 0 10px rgba(45,252,165,.6); }
 .wd.fut { opacity: .45; border-style: dashed; }
 html.lite .focus-pill, html.lite .wd.n3, html.lite .heat .l4 { box-shadow: none; }
+
+/* ---------- menú agrupado (Mi espacio · Academia · Práctica extra) ---------- */
+.nav-g { margin: 10px 8px 2px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); }
+.nav-g:first-child { margin-top: 0; }
+.nav-new { margin-left: auto; font-style: normal; font-size: .62rem; font-weight: 700; letter-spacing: .04em; padding: .05rem .4rem; border-radius: 99px; color: #04021a; background: linear-gradient(90deg, var(--cyan), var(--ok)); }
+#nav { scrollbar-width: thin; scrollbar-color: var(--rule2) transparent; }
+@media (min-width: 861px) and (max-height: 980px) { .side { gap: 12px; padding-top: 16px; } .nav-i { padding: .34rem .6rem; } .nav-g { margin-top: 7px; } .side-xp { padding: 9px 12px; } }
+@media (max-width: 860px) { .nav-g { display: none; } .nav-new { margin-left: 4px; } }
+/* ---------- novedades en Inicio ---------- */
+.news { border-color: transparent; }
+.news-list { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); margin: 0; padding: 0; list-style: none; }
+.news-list a { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 9px; border: 1px solid var(--rule2); background: rgba(255,255,255,.03); color: var(--ink); text-decoration: none; }
+.news-list a:hover { border-color: var(--cyan); }
+.news-list b { display: block; font-family: var(--f-display); }
+.news-list small { color: var(--dim); }
+.news-list .ico { width: 20px; height: 20px; margin-top: 2px; }
+@media (min-width: 861px) { #nav.more { -webkit-mask-image: linear-gradient(#000 calc(100% - 38px), transparent); mask-image: linear-gradient(#000 calc(100% - 38px), transparent); } }
+.nav-dot { margin-left: auto; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+.nav-i > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 860px) { .nav-dot { margin-left: 4px; } }
+@media (max-width: 860px) { .nav-i { flex: none; } .nav-i > span { overflow: visible; } }

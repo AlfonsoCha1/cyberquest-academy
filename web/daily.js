@@ -35,6 +35,12 @@ function dailyMissions() {
   ];
 }
 
+/* Menú: si hay más secciones abajo, se desvanece el final para que se note que se puede bajar. */
+function navMore() { const n = document.getElementById('nav'); if (n) n.classList.toggle('more', n.scrollHeight - n.scrollTop - n.clientHeight > 4); }
+const _baseRenderNav = renderNav;
+renderNav = function (cur) { _baseRenderNav(cur); navMore(); const a = document.querySelector('#nav [aria-current="page"]'); if (a && a.scrollIntoView && window.innerWidth > 860) a.scrollIntoView({ block: 'nearest' }); };
+(function () { const n = document.getElementById('nav'); if (n) n.addEventListener('scroll', navMore, { passive: true }); window.addEventListener('resize', navMore); })();
+
 /* Tocar en el menú la sección donde ya estás te regresa a su vista principal (antes no pasaba nada). */
 (function () {
   const nav = document.getElementById('nav');
@@ -54,6 +60,25 @@ VIEWS.inicio = function (view) {
     <div class="row week-dots" aria-label="Tu semana">${week.map((w, i) => `<span class="wd ${w.future ? 'fut' : ''} n${w.n}" title="${w.k}: ${w.n} de 3"><b>${'LMMJVSD'[i]}</b></span>`).join('')}<span class="muted" style="font-size:.82rem">Cada área cuenta cuando ganas XP en ella. La misión cambia cada día.</span></div></section>`);
   const hero = $('.panel.hero', view);
   if (hero) hero.after(panel); else view.prepend(panel);
+  // Novedades: qué se agregó y dónde está (se puede ocultar)
+  const NEWS_ID = '2026-11-04';
+  if (ST.sub.newsHide !== NEWS_ID) {
+    const items = [
+      ['formacion', 'formacion', 'Mi formación externa', 'Tus cursos de Coursera, Udemy y otras: avance, notas, horas e importación sin duplicados.'],
+      ['trabajo', 'trabajo', 'Mi trabajo 🔒', 'PowerShell, SQL, VS Code, herramientas y notas cifradas. Con contraseña.'],
+      ['cursos', 'cursos', 'SQL Server, SSIS y SAP', 'Tres cursos nuevos en Cursos, más la lección de T-SQL en Bases de datos.', 'sqlserver'],
+      ['ctf', 'ctf', 'CTF', '12 retos con bandera y caja de herramientas.'],
+      ['devlab', 'devlab', 'Laboratorio Dev+Sec', 'Ordena código, encuentra vulnerabilidades y predice qué imprime.'],
+      ['ingles', 'ingles', 'Inglés técnico', 'Vocabulario con audio, dictado y entrevista en inglés.']
+    ];
+    const news = h(`<section class="panel news"><div class="row" style="justify-content:space-between"><div><span class="eyebrow">Novedades · 4 de noviembre</span><h2>Lo nuevo en tu academia</h2></div><button class="btn small nh" type="button">Ocultar</button></div>
+      <ul class="news-list">${items.map(([k, ic, t, d, c]) => `<li><a href="#${k}" ${c ? `data-c="${c}"` : ''}>${icon(ic)}<span><b>${esc(t)}</b><small>${esc(d)}</small></span></a></li>`).join('')}</ul>
+      <p class="muted" style="font-size:.82rem">También está en el menú: <b>Mi espacio</b> arriba, la <b>Academia</b> en medio y la <b>Práctica extra</b> abajo.</p></section>`);
+    const head = $('.head', view);
+    if (head) head.after(news); else view.prepend(news);
+    $$('[data-c]', news).forEach(a => a.addEventListener('click', () => { ST.sub.curso = a.dataset.c; saveStore(); }));
+    $('.nh', news).addEventListener('click', () => { ST.sub.newsHide = NEWS_ID; saveStore(); news.remove(); });
+  }
   $$('.mis', panel).forEach(b => b.addEventListener('click', () => { saveStore(); ms[+b.dataset.i].go(); }));
   const grid = $('.grid.wide', view);
   if (grid) {

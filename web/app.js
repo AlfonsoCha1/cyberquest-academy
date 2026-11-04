@@ -52,15 +52,18 @@ const ICONS = {
   vacantes: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'
 };
 const SECTIONS = [
-  ['inicio', 'Inicio'], ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'], ['sql', 'Bases de datos'],
-  ['secplus', 'Security+'], ['cursos', 'Cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'],
-  ['imprevistos', 'Imprevistos'], ['ctf', 'CTF'], ['devlab', 'Laboratorio Dev+Sec'], ['ingles', 'Inglés técnico'],
-  ['vacantes', 'Vacantes'], ['formacion', 'Mi formación externa'], ['trabajo', 'Mi trabajo'], ['progreso', 'Progreso']
+  ['inicio', 'Inicio'],
+  ['formacion', 'Mi formación externa'], ['trabajo', 'Mi trabajo'], ['progreso', 'Progreso'],
+  ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'], ['sql', 'Bases de datos'],
+  ['secplus', 'Security+'], ['cursos', 'Cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'], ['imprevistos', 'Imprevistos'], ['vacantes', 'Vacantes'],
+  ['ctf', 'CTF'], ['devlab', 'Laboratorio Dev+Sec'], ['ingles', 'Inglés técnico']
 ];
+const NAV_GROUP = { formacion: 'Mi espacio', redes: 'Academia', ctf: 'Práctica extra' };   // título antes de cada grupo
+const NAV_NEW = { formacion: 'Nuevo', trabajo: 'Nuevo', ctf: 'Nuevo', devlab: 'Nuevo', ingles: 'Nuevo', cursos: '+3' };
 const VIEWS = {};
 const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[k] || ''}</svg>`;
 function renderNav(cur) {
-  $('#nav').innerHTML = SECTIONS.filter(([k]) => VIEWS[k]).map(([k, t]) => `<a class="nav-i" href="#${k}" ${k === cur || cur.indexOf(k + '/') === 0 ? 'aria-current="page"' : ''}>${icon(k)}<span>${t}</span></a>`).join('');
+  $('#nav').innerHTML = SECTIONS.filter(([k]) => VIEWS[k]).map(([k, t]) => `${NAV_GROUP[k] ? `<div class="nav-g" aria-hidden="true">${NAV_GROUP[k]}</div>` : ''}<a class="nav-i" href="#${k}" ${k === cur || cur.indexOf(k + '/') === 0 ? 'aria-current="page"' : ''}>${icon(k)}<span>${t}${k === 'trabajo' ? ' 🔒' : ''}</span>${NAV_NEW[k] ? (t.length > 14 ? `<em class="nav-dot" title="${NAV_NEW[k]}" aria-label="${NAV_NEW[k]}"></em>` : `<em class="nav-new">${NAV_NEW[k]}</em>`) : ''}</a>`).join('');
 }
 function renderSideXp() {
   const r = rankOf(ST.xp);
