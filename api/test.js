@@ -57,3 +57,36 @@ test('rechaza entradas malas y orígenes no permitidos', async () => {
     assert.equal(r.status, 204); assert.equal(r.headers.get('access-control-allow-origin'), 'https://cyberquest.example');
   } finally { server.close(); }
 });
+
+test('candado de Mi trabajo: hash en variable de entorno, contraseña correcta, incorrecta y límite', async () => {
+  const { make } = require('./tools/pin-hash');
+  const { parsePinSpec } = require('./server');
+  const spec = make('prueba-1234');
+  assert.ok(parsePinSpec(spec), 'el formato generado se puede leer');
+  assert.equal(parsePinSpec('texto-malo'), null);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cq-'));
+  const server = await createServer({ DATA_DIR: dir, ALLOWED_ORIGINS: 'https://cyberquest.example', TRABAJO_PIN_HASH: spec });
+  await new Promise(r => server.listen(0, r));
+  const base = `http://127.0.0.1:${server.address().port}`;
+  const post = (pin, origin) => fetch(base + '/api/trabajo/abrir', { method: 'POST', headers: Object.assign({ 'content-type': 'application/json' }, origin ? { origin } : {}), body: JSON.stringify({ pin }) });
+  try {
+    let r = await fetch(base + '/health'); assert.equal((await r.json()).trabajo, true);
+    r = await post('prueba-1234', 'https://cyberquest.example'); assert.equal(r.status, 200); assert.equal((await r.json()).ok, true);
+    r = await post('otra-cosa'); assert.equal(r.status, 401);
+    r = await post('12'); assert.equal(r.status, 400);
+    r = await post('prueba-1234', 'https://malo.example'); assert.equal(r.status, 403);
+    r = await fetch(base + '/api/trabajo/abrir'); assert.equal(r.status, 405);
+    const codes = []; for (let i = 0; i < 4; i++) codes.push((await post('mal-' + i)).status);
+    assert.ok(codes.includes(429), 'después de 5 intentos por IP responde 429: ' + codes.join(','));
+    const body = await (await fetch(base + '/health')).text();
+    assert.ok(!body.includes('prueba-1234') && !body.includes(spec), 'el estado no revela la contraseña ni el hash');
+  } finally { server.close(); }
+});
+
+test('sin TRABAJO_PIN_HASH el candado responde 503 (no se abre)', async () => {
+  const { server, base } = await boot();
+  try {
+    const r = await fetch(base + '/api/trabajo/abrir', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pin: 'lo-que-sea' }) });
+    assert.equal(r.status, 503);
+  } finally { server.close(); }
+});

@@ -13,9 +13,9 @@ VIEWS.inicio = function (view) {
     ['redes', 'Laboratorio de redes', 'Conecta PC, switch, router y firewall. Configura IPs y haz ping. Cada falla te explica el porqué.', `${done.redes}/${MISSIONS.filter(m => !m.free).length} misiones`],
     ['terminal', 'Terminal', 'Linux, CMD y PowerShell sobre equipos simulados que fueron atacados. Resuelve retos como analista.', `${done.term}/${TERM_CHALLENGES.length} retos`],
     ['comandos', 'Comandos', 'Linux, CMD y PowerShell: qué significan, qué hacen y su uso en seguridad.', `${done.cmds} dominados`],
-    ['sql', 'Bases de datos', 'SQL, PostgreSQL y SQLite con una base real en tu navegador, retos de investigación y examen.', `${Object.keys((ST.sql || {}).les || {}).length}/${SQL_LESSONS.length} lecciones`],
+    ['sql', 'Bases de datos', 'SQL, PostgreSQL, SQLite y SQL Server con una base real en tu navegador, retos de investigación y examen.', `${Object.keys((ST.sql || {}).les || {}).length}/${SQL_LESSONS.length} lecciones`],
     ['secplus', 'Security+ SY0-701', 'Tus 5 dominios con teoría, preguntas, simulacro y el proyecto integral.', `${secCount} preguntas`],
-    ['cursos', 'Cursos', 'Google, Cisco, AWS, Linux y Docker: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
+    ['cursos', 'Cursos', 'Google, Cisco, AWS, Linux, Docker, SQL Server, SSIS y SAP: código, cómo explicarlo y mini exámenes.', `${COURSES.length} cursos`],
     ['ramas', 'Las 12 ramas', 'SOC, forense, nube, criptografía y más: conceptos, herramientas y quiz.', `${BRANCHES.length} ramas`],
     ['soc', 'Simulador SOC', 'Alertas con logs reales. Decide qué harías y compáralo con un profesional.', `${SOC_SCN.length} casos`],
     ['vacantes', 'Vacantes', 'Pega cualquier vacante y ve qué habilidades pide y qué te falta. Incluye un ejemplo desglosado y temas que suelen pedir.', 'Cualquier puesto'],
@@ -102,7 +102,7 @@ VIEWS.secplus = function (view) {
 VIEWS.cursos = function (view) {
   let cur = ST.sub.curso || COURSES[0].id;
   view.appendChild(h(`<div class="head"><span class="eyebrow">Cursos</span><h1>Cursos recomendados</h1>
-    <p class="lead">Google, Cisco, AWS, Linux y Docker: los conceptos, el código que de verdad se usa con su explicación, cómo contarlo en una entrevista y un mini examen de cada uno.</p></div>`));
+    <p class="lead">Google, Cisco, AWS, Linux, Docker, SQL Server, SSIS y SAP: los conceptos, el código que de verdad se usa con su explicación, cómo contarlo en una entrevista y un mini examen de cada uno.</p></div>`));
   const tabs = h(`<div class="tabs" role="tablist">${COURSES.map(c => `<button class="tab" data-c="${c.id}">${esc(c.name)}</button>`).join('')}</div>`);
   const host = h('<div></div>');
   view.appendChild(tabs); view.appendChild(host);

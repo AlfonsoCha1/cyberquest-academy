@@ -1,0 +1,80 @@
+/* ===== Laboratorio Dev+Sec: programar pensando en seguridad =====
+   PARSONS: ordenar líneas de código (las del mismo "g" pueden ir en cualquier orden entre sí).
+   REVIEW: encontrar la línea vulnerable y elegir la corrección.
+   PREDICT: ¿qué imprime este código? */
+const PARSONS = [
+  { id: 'p1', t: 'Contar fallos por IP', lang: 'Python', ask: 'Ordena el script que cuenta los inicios fallidos por IP y avisa de las que tienen 3 o más.',
+    lines: ["fallos = {}", "for linea in lineas:", "    if 'FAILED' in linea:", "        ip = linea.split()[-1]", "        fallos[ip] = fallos.get(ip, 0) + 1", "for ip, n in fallos.items():", "    if n >= 3:", "        print('Alerta:', ip, n)"],
+    exp: 'Primero se crea el diccionario vacío, luego se recorre cada línea contando, y al final se revisa quién pasó el umbral. Es la base de una regla de detección de fuerza bruta.' },
+  { id: 'p2', t: '¿La contraseña es segura?', lang: 'Python', ask: 'Ordena la función que exige 12 caracteres, al menos un número y una mayúscula.',
+    lines: ['def es_segura(clave):', '    if len(clave) < 12:', '        return False', '    tiene_numero = any(c.isdigit() for c in clave)', '    tiene_mayus = any(c.isupper() for c in clave)', '    return tiene_numero and tiene_mayus'], g: { 3: 'a', 4: 'a' },
+    exp: 'Revisar primero el largo y salir temprano ("return False") hace la función más clara. Las dos comprobaciones de en medio pueden ir en cualquier orden.' },
+  { id: 'p3', t: 'Servicios automáticos detenidos', lang: 'PowerShell', ask: 'Ordena el script que lista los servicios que deberían arrancar solos pero están detenidos.',
+    lines: ['$servicios = Get-CimInstance Win32_Service', "$detenidos = $servicios | Where-Object { $_.StartMode -eq 'Auto' -and $_.State -ne 'Running' }", 'foreach ($s in $detenidos) {', '    Write-Output "$($s.Name) está detenido"', '}'],
+    exp: 'Un servicio automático detenido puede ser una falla… o un atacante que apagó el antivirus o el respaldo. Es un chequeo típico de soporte y de SOC.' },
+  { id: 'p4', t: 'Hashes de evidencia a CSV', lang: 'PowerShell', ask: 'Ordena el script que saca el SHA-256 de cada archivo de una carpeta y lo guarda en un CSV.',
+    lines: ['$archivos = Get-ChildItem -Path C:\\Evidencia -File', '$resultado = foreach ($a in $archivos) {', '    Get-FileHash -Path $a.FullName -Algorithm SHA256', '}', '$resultado | Export-Csv hashes.csv -NoTypeInformation'],
+    exp: 'Guardar los hashes al recolectar evidencia permite demostrar después que nadie la modificó (cadena de custodia).' },
+  { id: 'p5', t: 'Escapar HTML (anti-XSS)', lang: 'JavaScript', ask: 'Ordena la función que convierte texto en HTML seguro. Ojo: el orden de los reemplazos importa.',
+    lines: ['function escaparHtml(texto) {', '  return String(texto)', "    .replaceAll('&', '&amp;')", "    .replaceAll('<', '&lt;')", "    .replaceAll('>', '&gt;')", "    .replaceAll('\"', '&quot;');", '}'], g: { 3: 'b', 4: 'b' },
+    exp: '& debe ir primero: si reemplazas < por &lt; y DESPUÉS & por &amp;, el &lt; se convierte en &amp;lt; y se ve mal. Esta academia usa una función así (esc) para todo lo que muestra.' },
+  { id: 'p6', t: 'Usuarios sin MFA desde un CSV', lang: 'Python', ask: 'Ordena el script que lee un CSV exportado y muestra a los usuarios sin verificación en dos pasos.',
+    lines: ['import csv', "with open('usuarios.csv', newline='', encoding='utf-8') as f:", '    lector = csv.DictReader(f)', '    for fila in lector:', "        if fila['mfa'] == '0':", "            print(fila['usuario'])"],
+    exp: 'csv.DictReader usa los encabezados como nombres. Con "with" el archivo se cierra solo, aunque haya un error.' }
+];
+
+const REVIEW = [
+  { id: 'v1', t: 'Buscar un usuario', lang: 'Python', owasp: 'Inyección',
+    lines: ['def buscar(cur, usuario):', '    sql = "SELECT * FROM usuarios WHERE usuario = \'" + usuario + "\'"', '    cur.execute(sql)', '    return cur.fetchall()'], bad: 1,
+    fixes: ['cur.execute("SELECT * FROM usuarios WHERE usuario = %s", (usuario,))', 'Quitar las comillas del texto del usuario con replace', 'Poner el SELECT en mayúsculas', 'Usar try/except alrededor del execute'],
+    exp: "Pegar el texto del usuario en el SQL permite inyección: con  ' OR '1'='1  devuelve a todos. Con parámetros (%s o ?) el motor trata el dato como dato, nunca como código. Quitar comillas a mano se puede saltar." },
+  { id: 'v2', t: 'Mostrar lo que buscaste', lang: 'JavaScript', owasp: 'Inyección (XSS)',
+    lines: ['const params = new URLSearchParams(location.search);', "const q = params.get('q') || '';", "resultado.innerHTML = 'Buscaste: ' + q;"], bad: 2,
+    fixes: ["resultado.textContent = 'Buscaste: ' + q;", 'Usar q.toUpperCase() antes de mostrarlo', 'Cambiar const por let', "Validar que q no esté vacío"],
+    exp: 'innerHTML interpreta el texto como HTML: un enlace con ?q=<img src=x onerror=…> ejecuta código en la víctima (XSS reflejado). textContent lo muestra como texto. Si necesitas HTML, escápalo antes.' },
+  { id: 'v3', t: 'Hacer ping a un equipo', lang: 'Python', owasp: 'Inyección de comandos',
+    lines: ['import subprocess', 'def probar(host):', "    return subprocess.run('ping -c 1 ' + host, shell=True, capture_output=True)"], bad: 2,
+    fixes: ["subprocess.run(['ping', '-c', '1', host], capture_output=True) y validar que host sea una IP o nombre válido", 'Agregar timeout=5', 'Usar os.system en vez de subprocess', 'Poner el comando en una variable aparte'],
+    exp: 'Con shell=True, un host como "8.8.8.8; cat /etc/passwd" ejecuta un segundo comando. Pasar la lista de argumentos sin shell evita que el texto se interprete, y validar la entrada cierra la puerta.' },
+  { id: 'v4', t: 'Llamar a una API', lang: 'Python', owasp: 'Fallas criptográficas / secretos expuestos',
+    lines: ['import requests', 'CLAVE_API = "clave-super-secreta-123"', 'def clima(ciudad):', "    return requests.get('https://api.ejemplo.test/clima', params={'q': ciudad, 'key': CLAVE_API})"], bad: 1,
+    fixes: ["Leerla de una variable de entorno o gestor de secretos (os.environ['CLAVE_API']) y rotar la que se expuso", 'Ponerla en Base64 para que no se lea', 'Cambiarle el nombre a la variable', 'Moverla al final del archivo'],
+    exp: 'Una clave escrita en el código termina en Git, en respaldos y en manos de quien vea el repositorio. Se lee de variables de entorno o de un gestor de secretos, y si ya se subió, se rota: borrarla del archivo no la borra del historial.' },
+  { id: 'v5', t: 'Guardar contraseñas', lang: 'Python', owasp: 'Fallas criptográficas',
+    lines: ['import hashlib', 'def guardar(usuario, clave):', '    h = hashlib.md5(clave.encode()).hexdigest()', '    db.insert(usuario, h)'], bad: 2,
+    fixes: ['Usar un hash lento con sal, como bcrypt o Argon2 (bcrypt.hashpw(clave.encode(), bcrypt.gensalt()))', 'Usar SHA-256 en lugar de MD5', 'Guardar la contraseña cifrada con AES', 'Hacer md5 dos veces'],
+    exp: 'MD5 y SHA-256 son rapidísimos: un atacante prueba miles de millones por segundo. Para contraseñas se usa bcrypt, scrypt o Argon2: llevan sal y son lentos a propósito. Cifrar con AES tampoco sirve: quien tenga la llave las recupera todas.' },
+  { id: 'v6', t: 'Descargar un archivo', lang: 'JavaScript (Node)', owasp: 'Control de acceso roto (path traversal)',
+    lines: ["app.get('/descargar', (req, res) => {", "  const archivo = path.join(__dirname, 'reportes', req.query.nombre);", '  res.sendFile(archivo);', '});'], bad: 1,
+    fixes: ["Usar path.basename(req.query.nombre) y comprobar que la ruta final quede dentro de la carpeta reportes", 'Usar path.resolve en vez de path.join', 'Pedir que el nombre termine en .pdf', 'Cambiar GET por POST'],
+    exp: 'Con nombre=../../.env el usuario sale de la carpeta y descarga archivos del servidor. Se toma solo el nombre del archivo y se verifica que la ruta resuelta empiece con la carpeta permitida. Revisar la extensión no basta.' },
+  { id: 'v7', t: 'Ver una factura', lang: 'JavaScript (Node)', owasp: 'Control de acceso roto (IDOR)',
+    lines: ["app.get('/api/facturas/:id', requiereSesion, async (req, res) => {", '  const f = await db.factura(req.params.id);', '  res.json(f);', '});'], bad: 2,
+    fixes: ['Antes de responder, verificar que la factura sea del usuario de la sesión (f.cliente_id === req.user.id) y si no, responder 404', 'Usar ids más largos', 'Quitar requiereSesion', 'Responder con res.send en vez de res.json'],
+    exp: 'Tener sesión no significa tener permiso sobre CUALQUIER factura: cambiando el id en la URL se ven las de otros clientes. Cada consulta debe validar que el recurso pertenece a quien lo pide. Ids largos solo lo hacen más difícil de adivinar.' },
+  { id: 'v8', t: 'Script con credenciales', lang: 'PowerShell', owasp: 'Fallas de identificación y autenticación',
+    lines: ["$clave = ConvertTo-SecureString 'Admin2024!' -AsPlainText -Force", "$cred = New-Object PSCredential('EMPRESA\\admin', $clave)", "Invoke-Command -ComputerName SRV01 -Credential $cred -ScriptBlock { Restart-Service Spooler }"], bad: 0,
+    fixes: ['Pedirla al ejecutar con Get-Credential o leerla de un almacén de secretos (módulo SecretManagement)', 'Guardar el script en una carpeta oculta', 'Ponerle comentarios para que nadie la use', 'Cambiar comillas simples por dobles'],
+    exp: 'La contraseña queda en texto claro en el archivo, en el historial y en cualquier copia. Get-Credential la pide en el momento; SecretManagement la guarda cifrada. Y mejor una cuenta con solo el permiso necesario, no admin.' },
+  { id: 'v9', t: 'Recibir datos de otra app', lang: 'Python (Flask)', owasp: 'Fallas de integridad de datos',
+    lines: ['import pickle', "@app.post('/importar')", 'def importar():', '    datos = pickle.loads(request.data)', '    return guardar(datos)'], bad: 3,
+    fixes: ['Recibir JSON (json.loads) y validar los campos esperados', 'Comprimir los datos antes', 'Usar pickle.load en lugar de pickle.loads', 'Limitar el tamaño a 1 MB y seguir usando pickle'],
+    exp: 'pickle puede ejecutar código al deserializar: un atacante manda un objeto armado y toma el servidor. Con datos de fuera se usa un formato sin código (JSON) y se valida su estructura.' },
+  { id: 'v10', t: 'Registrar un inicio de sesión', lang: 'Python', owasp: 'Fallas en registro y monitoreo',
+    lines: ['def login(usuario, clave):', '    ok = verificar(usuario, clave)', "    log.info(f'Login de {usuario} con clave {clave}: {ok}')", '    return ok'], bad: 2,
+    fixes: ["log.info(f'Login de {usuario}: {\"ok\" if ok else \"fallido\"}') sin la contraseña", 'Usar log.debug para que no salga en producción', 'Cifrar el archivo de log', 'No registrar nada de los inicios de sesión'],
+    exp: 'Los logs los leen muchas personas y herramientas: nunca deben llevar contraseñas, tokens ni tarjetas. Pero sí hay que registrar el evento (usuario, resultado, IP y hora): sin eso no detectas fuerza bruta.' }
+];
+
+const PREDICT = [
+  { id: 'q1', lang: 'Python', code: 'print(len("ciberseguridad"))', o: ['14', '13', '15', 'Error'], e: 'len cuenta caracteres: c-i-b-e-r-s-e-g-u-r-i-d-a-d son 14.' },
+  { id: 'q2', lang: 'Python', code: "ips = ['10.0.0.1', '10.0.0.2', '10.0.0.1']\nprint(len(set(ips)))", o: ['2', '3', '1', "{'10.0.0.1', '10.0.0.2'}"], e: 'set quita los repetidos: quedan 2 IPs únicas. Útil para contar orígenes distintos de un ataque.' },
+  { id: 'q3', lang: 'JavaScript', code: "console.log('5' + 3, '5' - 3);", o: ['53 2', '8 2', '53 53', '8 8'], e: 'Con + y un texto, JavaScript concatena ("53"); con - convierte a número (2). Por eso siempre conviene convertir con Number() antes de operar.' },
+  { id: 'q4', lang: 'Python', code: 'x = [1, 2, 3]\ny = x\ny.append(4)\nprint(x)', o: ['[1, 2, 3, 4]', '[1, 2, 3]', '[4]', 'Error'], e: 'y = x no copia la lista: las dos variables apuntan a la misma. Para copiar usa x.copy() o list(x).' },
+  { id: 'q5', lang: 'PowerShell', code: '$n = 0\n1..5 | ForEach-Object { $n += $_ }\n$n', o: ['15', '5', '0', '12345'], e: '1..5 genera del 1 al 5 y ForEach-Object los va sumando en $n: 1+2+3+4+5 = 15.' },
+  { id: 'q6', lang: 'JavaScript', code: 'console.log([1, 2, 3].map(n => n * 2).filter(n => n > 2));', o: ['[ 4, 6 ]', '[ 2, 4, 6 ]', '[ 6 ]', '[ 1, 2, 3 ]'], e: 'map duplica cada número ([2, 4, 6]) y filter deja solo los mayores que 2: [4, 6].' },
+  { id: 'q7', lang: 'Python', code: 'print("192.168.1.10".split(".")[-1])', o: ['10', '192', "['192', '168', '1', '10']", '1'], e: 'split(".") parte la IP en 4 pedazos y [-1] toma el último: el host.' },
+  { id: 'q8', lang: 'Python', code: 'usuario = "Admin"\nprint(usuario == "admin", usuario.lower() == "admin")', o: ['False True', 'True True', 'False False', 'True False'], e: 'Las comparaciones de texto distinguen mayúsculas. Al validar usuarios conviene normalizar con lower() para que "Admin" y "admin" no sean dos cuentas distintas.' },
+  { id: 'q9', lang: 'JavaScript', code: 'console.log(0.1 + 0.2 === 0.3);', o: ['false', 'true', 'undefined', 'Error'], e: '0.1 + 0.2 da 0.30000000000000004 por cómo se guardan los decimales. Por eso el dinero se maneja en centavos enteros.' },
+  { id: 'q10', lang: 'PowerShell', code: "'Error de disco', 'Inicio OK', 'Error de red' | Where-Object { $_ -like 'Error*' } | Measure-Object | Select-Object -ExpandProperty Count", o: ['2', '3', '1', 'Error de disco'], e: 'Where-Object deja los que empiezan con "Error" (2) y Measure-Object los cuenta. Así cuentas eventos de un log en una sola línea.' }
+];

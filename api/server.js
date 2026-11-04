@@ -8,15 +8,20 @@
  *   GET    /api/sync/:codigo       descarga tu progreso en otro dispositivo
  *   PUT    /api/sync/:codigo       actualiza tu progreso
  *   DELETE /api/sync/:codigo       borra tu progreso del servidor
+ *   POST   /api/trabajo/abrir      revisa la contraseña del apartado "Mi trabajo"
  *
  * El código funciona como contraseña: quien lo tenga puede leer ese progreso.
  * No se guardan nombres, correos ni nada personal; solo XP, respuestas y misiones.
+ *
+ * Candado de "Mi trabajo": la contraseña NO está en el código. En la variable de entorno
+ * TRABAJO_PIN_HASH va solo su hash (pbkdf2$sha256$iteraciones$sal$hash, genéralo con
+ * node api/tools/pin-hash.js). Se limitan los intentos por IP y en total por hora.
  */
 const http = require('node:http');
 const crypto = require('node:crypto');
 const { createStore } = require('./store');
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const MAX_BODY = 256 * 1024;                     // 256 KB por progreso
 const CODE_RE = /^CQ-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/;
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sin 0/O ni 1/I para dictarlo sin errores
@@ -36,6 +41,16 @@ function rateLimiter(max, windowMs) {
     if (!e || now - e.t > windowMs) { hits.set(ip, { t: now, n: 1 }); return true; }
     e.n++; return e.n <= max;
   };
+}
+
+/* ---------- candado de "Mi trabajo" ---------- */
+function parsePinSpec(spec) {
+  const m = /^pbkdf2\$(sha256|sha512)\$(\d{5,7})\$([A-Za-z0-9+/=]{16,})\$([A-Za-z0-9+/=]{40,})$/.exec(String(spec || '').trim());
+  if (!m) return null;
+  return { digest: m[1], it: +m[2], salt: Buffer.from(m[3], 'base64'), hash: Buffer.from(m[4], 'base64') };
+}
+function checkPin(pin, spec) {
+  return new Promise((resolve, reject) => crypto.pbkdf2(String(pin), spec.salt, spec.it, spec.hash.length, spec.digest, (e, k) => e ? reject(e) : resolve(k.length === spec.hash.length && crypto.timingSafeEqual(k, spec.hash))));
 }
 
 /* ---------- mantener despierto (Render gratis se duerme a los 15 min sin tráfico) ---------- */
@@ -69,6 +84,10 @@ async function createServer(env = process.env) {
   const allowOrigin = o => !!o && (origins.includes(o) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o));
   const limitWrite = rateLimiter(30, 10 * 60 * 1000);   // 30 escrituras cada 10 min por IP
   const limitRead = rateLimiter(120, 10 * 60 * 1000);
+  const limitPin = rateLimiter(+env.TRABAJO_MAX_INTENTOS || 5, 15 * 60 * 1000);  // 5 intentos cada 15 min por IP
+  const pinGlobal = { t: Date.now(), n: 0, max: +env.TRABAJO_MAX_HORA || 40 };   // y 40 por hora para todos juntos
+  const pinSpec = parsePinSpec(env.TRABAJO_PIN_HASH);
+  if (env.TRABAJO_PIN_HASH && !pinSpec) console.error('TRABAJO_PIN_HASH tiene un formato inválido: el candado queda desactivado.');
   const started = Date.now();
 
   const send = (res, status, obj, extra) => {
@@ -99,7 +118,20 @@ async function createServer(env = process.env) {
     try {
       if (req.method === 'OPTIONS') return send(res, origin && !cors['access-control-allow-origin'] ? 403 : 204);
       if (url.pathname === '/' || url.pathname === '/health') {
-        return send(res, 200, { ok: true, service: 'cyberquest-api', version: VERSION, storage: store.kind, uptimeSec: Math.round((Date.now() - started) / 1000) });
+        return send(res, 200, { ok: true, service: 'cyberquest-api', version: VERSION, storage: store.kind, trabajo: !!pinSpec, uptimeSec: Math.round((Date.now() - started) / 1000) });
+      }
+      if (url.pathname === '/api/trabajo/abrir') {
+        if (origin && !cors['access-control-allow-origin']) return send(res, 403, { error: 'Origen no permitido.' });
+        if (req.method !== 'POST') return send(res, 405, { error: 'Método no permitido.' });
+        if (!pinSpec) return send(res, 503, { error: 'El candado de Mi trabajo no está configurado en el servidor.' });
+        const now = Date.now(); if (now - pinGlobal.t > 3600 * 1000) { pinGlobal.t = now; pinGlobal.n = 0; }
+        if (!limitPin(ip) || ++pinGlobal.n > pinGlobal.max) return send(res, 429, { error: 'Demasiados intentos. Espera unos minutos.' });
+        let body; try { body = JSON.parse(await readBody(req) || '{}'); } catch { return send(res, 400, { error: 'El cuerpo no es JSON válido.' }); }
+        const pin = body && body.pin;
+        if (typeof pin !== 'string' || pin.length < 4 || pin.length > 128) return send(res, 400, { error: 'Contraseña con formato inválido.' });
+        const ok = await checkPin(pin, pinSpec);
+        if (!ok) { await new Promise(r => setTimeout(r, 400)); return send(res, 401, { error: 'Contraseña incorrecta.' }); }
+        return send(res, 200, { ok: true });
       }
       const m = /^\/api\/sync(?:\/([^/]+))?$/.exec(url.pathname);
       if (!m) return send(res, 404, { error: 'Ruta no encontrada.' });
@@ -135,6 +167,7 @@ async function createServer(env = process.env) {
     }
   });
   server.store = store;
+  server.trabajo = !!pinSpec;
   return server;
 }
 
@@ -143,10 +176,10 @@ if (require.main === module) {
   createServer().then(server => {
     const port = +process.env.PORT || 3000;
     server.listen(port, () => {
-      log(`v${VERSION} escuchando en :${port} · almacenamiento: ${server.store.kind}`);
+      log(`v${VERSION} escuchando en :${port} · almacenamiento: ${server.store.kind} · candado Mi trabajo: ${server.trabajo ? 'configurado' : 'sin configurar'}`);
       startKeepAlive(process.env, log);
     });
   }).catch(e => { console.error('No arrancó:', e); process.exit(1); });
 }
 
-module.exports = { createServer, newCode, inWindow, CODE_RE };
+module.exports = { createServer, newCode, inWindow, CODE_RE, parsePinSpec };

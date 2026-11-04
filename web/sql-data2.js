@@ -102,6 +102,23 @@ SQL_LESSONS.push(
       ['¿Dónde es común encontrar bases SQLite?', ['Navegadores, celulares y apps de escritorio', 'Solo en mainframes', 'Solo en servidores Oracle', 'En el BIOS'], 'Por eso aparece tanto en forense.']
     ],
     tip: 'Si te piden "saber SQL" en una vacante, practica las mismas consultas en SQLite (rápido) y en PostgreSQL (lo que verás en empresas).'
+  },
+  {
+    id: 'l13', t: 'SQL Server y T-SQL: lo que cambia', nivel: 'Avanzado',
+    que: 'SQL Server es el motor de bases de datos de Microsoft y T-SQL es su dialecto. Casi todo es el SQL que ya sabes; cambian algunas funciones y palabras. Aquí aprendes a traducir entre T-SQL y esta consola (SQLite).',
+    para: 'En empresas con Windows es el motor más común: ERPs, sistemas internos y herramientas de seguridad guardan sus datos ahí. Si una vacante pide "SQL Server", te van a pedir consultas en T-SQL.',
+    pasos: ['La estructura no cambia: SELECT … FROM … WHERE … GROUP BY … ORDER BY.', "Cambias las piezas propias de cada motor: TOP en vez de LIMIT, GETDATE() en vez de datetime('now'), ISNULL en vez de IFNULL.", 'En el trabajo pruebas en SQL Server Management Studio (SSMS) o en VS Code con la extensión MSSQL; aquí, en la consola.', 'Ante la duda usa lo estándar (COALESCE, CASE, CAST): funciona en casi todos los motores.'],
+    sintaxis: "-- SQL Server (T-SQL)\nSELECT TOP 5 hostname, dias_sin_parche\nFROM dbo.equipos\nWHERE edr = 0\nORDER BY dias_sin_parche DESC;\n\n-- La misma consulta en SQLite, PostgreSQL o MySQL\nSELECT hostname, dias_sin_parche\nFROM equipos\nWHERE edr = 0\nORDER BY dias_sin_parche DESC\nLIMIT 5;",
+    params: [['TOP n ↔ LIMIT n', 'cuántas filas devolver'], ["GETDATE() ↔ datetime('now')", 'fecha y hora actual'], ["DATEADD(day, -7, GETDATE()) ↔ datetime('now', '-7 days')", 'hace 7 días'], ['ISNULL(x, 0) ↔ IFNULL(x, 0)', 'reemplazar nulos (COALESCE sirve en todos)'], ["a + ' ' + b ↔ a || ' ' || b", 'unir textos (CONCAT existe en ambos)'], ['LEN(x) ↔ LENGTH(x)', 'largo de un texto'], ['dbo.tabla ↔ tabla', 'dbo es el esquema por defecto de SQL Server']],
+    ej: { sql: "SELECT usuario, COALESCE(rol, 'sin rol') AS rol\nFROM usuarios\nORDER BY usuario\nLIMIT 5;", exp: 'COALESCE es estándar: esta consulta funciona igual en SQL Server si cambias LIMIT 5 por TOP 5 justo después del SELECT.' },
+    sec: { sql: 'SELECT u.usuario, COUNT(*) AS fallos\nFROM inicios_sesion i\nJOIN usuarios u ON u.id = i.usuario_id\nWHERE i.exito = 0\nGROUP BY u.usuario\nORDER BY fallos DESC\nLIMIT 3;', exp: 'Las 3 cuentas con más inicios fallidos. En T-SQL sería SELECT TOP 3 u.usuario, COUNT(*) AS fallos … ORDER BY fallos DESC, sin LIMIT al final.' },
+    ejercicio: { ask: 'En SQL Server alguien escribió: SELECT TOP 3 hostname, dias_sin_parche FROM dbo.equipos WHERE edr = 0 ORDER BY dias_sin_parche DESC. Tradúcela para esta consola.', sql: 'SELECT hostname, dias_sin_parche FROM equipos WHERE edr = 0 ORDER BY dias_sin_parche DESC LIMIT 3', ordered: true, hint: 'Quita TOP 3 y dbo., y agrega LIMIT 3 al final.' },
+    quiz: [
+      ['¿Cómo pides la fecha y hora actual en SQL Server?', ['GETDATE()', "datetime('now')", 'NOW()', 'SYSDATE'], "datetime('now') es de SQLite, now() de PostgreSQL y MySQL, y SYSDATE de Oracle."],
+      ['¿Qué función para reemplazar nulos funciona igual en SQL Server, PostgreSQL y SQLite?', ['COALESCE', 'ISNULL', 'IFNULL', 'NVL'], 'ISNULL es de SQL Server, IFNULL de SQLite y MySQL, y NVL de Oracle.'],
+      ["En T-SQL, ¿qué indica la N en N'Peña'?", ['Que el texto es Unicode (NVARCHAR)', 'Que es un número', 'Que puede ser nulo', 'Que es el nombre de una tabla'], 'Sin la N, los acentos y la ñ pueden guardarse mal en columnas Unicode.']
+    ],
+    tip: 'Practica cada consulta en dos dialectos. En Cursos → "Microsoft SQL Server (T-SQL)" tienes consultas de seguridad para SQL Server: quién es sysadmin, fallos de inicio de sesión y configuraciones peligrosas.'
   }
 );
 

@@ -54,12 +54,13 @@ const ICONS = {
 const SECTIONS = [
   ['inicio', 'Inicio'], ['redes', 'Laboratorio de redes'], ['terminal', 'Terminal'], ['comandos', 'Comandos'], ['sql', 'Bases de datos'],
   ['secplus', 'Security+'], ['cursos', 'Cursos'], ['ramas', 'Ramas'], ['soc', 'Simulador SOC'],
-  ['imprevistos', 'Imprevistos'], ['vacantes', 'Vacantes'], ['progreso', 'Progreso']
+  ['imprevistos', 'Imprevistos'], ['ctf', 'CTF'], ['devlab', 'Laboratorio Dev+Sec'], ['ingles', 'Inglés técnico'],
+  ['vacantes', 'Vacantes'], ['formacion', 'Mi formación externa'], ['trabajo', 'Mi trabajo'], ['progreso', 'Progreso']
 ];
 const VIEWS = {};
 const icon = k => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[k] || ''}</svg>`;
 function renderNav(cur) {
-  $('#nav').innerHTML = SECTIONS.map(([k, t]) => `<a class="nav-i" href="#${k}" ${k === cur ? 'aria-current="page"' : ''}>${icon(k)}<span>${t}</span></a>`).join('');
+  $('#nav').innerHTML = SECTIONS.filter(([k]) => VIEWS[k]).map(([k, t]) => `<a class="nav-i" href="#${k}" ${k === cur || cur.indexOf(k + '/') === 0 ? 'aria-current="page"' : ''}>${icon(k)}<span>${t}</span></a>`).join('');
 }
 function renderSideXp() {
   const r = rankOf(ST.xp);

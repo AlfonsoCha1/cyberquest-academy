@@ -13,10 +13,16 @@ Academia de ciberseguridad para **aprender practicando**: armas redes y las arre
 | **Laboratorio de redes** | Conectas PC, laptop (Wi-Fi), servidor, impresora, switch, access point, router, firewall e Internet. Configuras IP, máscara, puerta de enlace y rutas, y haces ping paso a paso (ARP, NAT, zonas LAN/DMZ/WAN). 5 misiones de casa a empresa + 3 tickets de fallas reales + modo libre. |
 | **Terminal** | Linux (servidor web atacado, 9 retos) y Windows CMD + PowerShell (PC comprometida, 8 retos): fuerza bruta, cuentas persistentes, procesos impostores, archivo hosts falso, eventos 4625/4624/4720/4732. |
 | **Comandos** | Fichas de Linux, CMD y PowerShell: qué significan, qué hacen, ejemplo y uso en seguridad, con mini examen. |
-| **Bases de datos** | SQL, PostgreSQL y SQLite con una base **real** en el navegador (SQLite vía sql.js): 12 lecciones con ejercicio y mini examen, consola con comandos `\dt`/`.tables`, 10 retos de investigación que se califican solos y examen final con resultado por tema. |
+| **Bases de datos** | SQL, PostgreSQL, SQLite y SQL Server con una base **real** en el navegador (SQLite vía sql.js): 13 lecciones con ejercicio y mini examen (incluye "SQL Server y T-SQL: lo que cambia"), consola con comandos `\dt`/`.tables` y pistas para traducir T-SQL, 10 retos de investigación que se califican solos y examen final con resultado por tema. |
 | **Vacantes** | Pega una vacante y ve qué habilidades pide, cuáles ya practicas aquí y qué te falta. Un ejemplo de vacante desglosado con ruta de estudio, temas extra (EDR, Microsoft 365, DLP, IA, superficie de ataque, SaaS) y preguntas de entrevista. |
 | **Security+ SY0-701** | Los 5 dominios con teoría, preguntas con explicación, simulacro y proyecto integral. |
-| **Cursos** | Temario de cursos recomendados (Google, Cisco NetAcad, AWS, Linux y Docker): conceptos, código explicado y cómo contarlo en una entrevista. |
+| **Cursos** | Guías de cursos recomendados (Google, Cisco NetAcad, AWS, Linux, Docker, **Microsoft SQL Server (T-SQL)**, **SSIS** y **SAP para TI y seguridad**): conceptos, código explicado, cómo contarlo en una entrevista y mini examen. |
+| **CTF** | 12 retos con bandera `CQ{…}` (Base64, ROT13, hex, XOR, PowerShell codificado, logs, cookies, JWT, hashes, procesos sospechosos). Las banderas se verifican por hash SHA-256: no están en el código. Incluye caja de herramientas. |
+| **Laboratorio Dev+Sec** | Ordenar código (Python, PowerShell, JavaScript), encontrar la vulnerabilidad y elegir la corrección (categorías OWASP), "¿qué imprime?" y 10 reglas de código seguro. |
+| **Inglés técnico** | 48 palabras con audio (síntesis del navegador), frases para soporte e incidentes, falsos amigos, lectura de tickets reales, dictado, entrevista en inglés y pronunciación. |
+| **Mi formación externa** | Registro personal de cursos de Coursera, Udemy y otras plataformas: programas, estado, % observado o manual, notas, horas, fechas, certificados, cursos de interés, importación CSV/JSON/enlaces sin duplicados, estadísticas, calendario y modo enfoque (temporizador que registra tiempo real). |
+| **Mi trabajo** 🔒 | Apartado con contraseña: recetario de PowerShell, SQL en 3 dialectos, atajos de VS Code, herramientas (decodificar, hashes, JWT, fechas, CSV→INSERT, contraseñas) y notas/bitácora cifradas con AES-GCM. |
+| **Misión del día** | En Inicio: una tarea diaria de inglés, programación y ciberseguridad, con racha de días. |
 | **Ramas, SOC e Imprevistos** | 12 especialidades, alertas con logs para decidir qué hacer y problemas que no vienen en el curso pero sí en el trabajo. |
 | **Progreso** | XP, rangos, repaso de errores, exportar/borrar datos y sincronizar entre dispositivos con un código. |
 
@@ -41,6 +47,14 @@ web/      App estática (HTML + CSS + JS sin dependencias) · PWA con service wo
   cloud.js         sincronización con el API e instalación de la app
   sql-*.js         base de práctica, lecciones, retos y examen de SQL
   jobs-*.js        analizador de vacantes, vacantes reales y temas que piden
+  ext-core.js      formación externa: identidad de cursos, importación idempotente y estadísticas (sin interfaz)
+  ext-ui.js        formación externa: vistas, ficha, importador y modo enfoque
+  tools.js         caja de herramientas compartida (CTF y Mi trabajo)
+  ctf-*.js         retos CTF (solo hashes de las banderas)
+  devlab-*.js      laboratorio Dev+Sec
+  ingles-*.js      inglés técnico
+  trabajo-*.js     Mi trabajo (candado y cifrado)
+  daily.js         misión del día y racha
   vendor/          motor SQLite (sql.js, licencia MIT)
 api/      API en Node (sin framework) para sincronizar progreso
 tests/    pruebas del laboratorio de redes
@@ -59,6 +73,7 @@ cd api && npm install && npm start
 # Pruebas
 node tests/netlab.test.js
 node tests/sql.test.js
+node tests/ext.test.js
 cd api && npm test
 ```
 
@@ -71,6 +86,7 @@ cd api && npm test
 | GET | `/api/sync/:codigo` | Baja tu progreso en otro dispositivo |
 | PUT | `/api/sync/:codigo` | Actualiza tu progreso |
 | DELETE | `/api/sync/:codigo` | Borra tu progreso del servidor |
+| POST | `/api/trabajo/abrir` | Revisa la contraseña de "Mi trabajo" (5 intentos cada 15 min por IP y 40 por hora en total) |
 
 El código funciona como contraseña. No se guardan nombres ni correos: solo XP, respuestas y misiones. Límite de 256 KB por progreso, límite de peticiones por IP y CORS solo para la app.
 
@@ -87,6 +103,7 @@ El código funciona como contraseña. No se guardan nombres ni correos: solo XP,
 | `KEEPALIVE_HOURS` | `7-24` (horas en que no se duerme) |
 | `KEEPALIVE_TZ` | `America/Mexico_City` |
 | `DATABASE_URL` | *(opcional)* Postgres para guardar la sincronización para siempre |
+| `TRABAJO_PIN_HASH` | Hash de la contraseña de "Mi trabajo" (genéralo con `node api/tools/pin-hash.js`). Nunca pongas la contraseña en el repositorio. |
 
 ### Mantenerlo despierto
 

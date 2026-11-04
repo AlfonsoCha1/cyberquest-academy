@@ -42,6 +42,12 @@ const PG_HINTS = [
   [/\binterval\s*'/i, "interval es de PostgreSQL; en SQLite usa datetime('now', '-1 day')."],
   [/\bSERIAL\b/i, 'SERIAL es de PostgreSQL; en SQLite usa INTEGER PRIMARY KEY.'],
   [/\bTOP\s+\d+/i, 'TOP es de SQL Server; aquí usa LIMIT al final.'],
+  [/\bGETDATE\s*\(/i, "GETDATE() es de SQL Server; en SQLite usa datetime('now')."],
+  [/\bDATEADD\s*\(/i, "DATEADD es de SQL Server; en SQLite usa datetime('now', '-7 days')."],
+  [/\bISNULL\s*\(/i, 'ISNULL es de SQL Server; en SQLite usa IFNULL o COALESCE.'],
+  [/\bLEN\s*\(/i, 'LEN es de SQL Server; en SQLite usa LENGTH.'],
+  [/\bdbo\./i, 'dbo. es el esquema de SQL Server; aquí escribe solo el nombre de la tabla.'],
+  [/(^|[\s(,=])N'/, "La N antes del texto (N'…') es de SQL Server; en SQLite quítala."],
   [/\bSHOW\s+TABLES\b/i, 'SHOW TABLES es de MySQL; aquí usa \\dt o .tables.']
 ];
 function sqlFriendly(msg, sql) {
@@ -137,7 +143,7 @@ const sqlFb = (box, ok, msg, extra) => { box.innerHTML = `<div class="fb ${ok ? 
 /* ---------- vista principal ---------- */
 VIEWS.sql = function (view) {
   const S = sqlState();
-  view.appendChild(h(`<div class="head"><span class="eyebrow">Bases de datos</span><h1>SQL, PostgreSQL y SQLite</h1>
+  view.appendChild(h(`<div class="head"><span class="eyebrow">Bases de datos</span><h1>SQL, PostgreSQL, SQLite y SQL Server</h1>
     <p class="lead">Aprende a consultar bases de datos con una base REAL dentro de tu navegador: una empresa ficticia con usuarios, inicios de sesión, alertas, equipos y vulnerabilidades. Cada lección trae ejercicio, mini examen y su uso en ciberseguridad.</p></div>`));
   const status = h('<p class="muted sql-status">Cargando el motor de base de datos…</p>');
   const tabs = h(`<div class="tabs" role="tablist"><button class="tab" data-t="lec">Lecciones</button><button class="tab" data-t="con">Consola</button><button class="tab" data-t="ret">Retos de investigación</button><button class="tab" data-t="exa">Examen</button></div>`);
@@ -260,7 +266,7 @@ VIEWS.sql = function (view) {
   function drawExam() {
     const last = S.exam;
     const intro = h(`<section class="panel hero"><h2>Examen de bases de datos</h2>
-      <p>Dos partes: <b>15 preguntas</b> de teoría (SQL, PostgreSQL, SQLite y seguridad) y <b>5 consultas</b> sobre la base de la empresa. Al final ves tu calificación por tema y qué repasar.</p>
+      <p>Dos partes: <b>15 preguntas</b> de teoría (SQL, PostgreSQL, SQLite, SQL Server y seguridad) y <b>5 consultas</b> sobre la base de la empresa. Al final ves tu calificación por tema y qué repasar.</p>
       ${last ? `<p class="muted">Último intento: ${last.total}% (teoría ${last.theory}%, práctica ${last.practice}/${SQL_EXAM_PRACTICE.length}) · mejor: ${last.best}%</p>` : ''}
       <div class="row"><button class="btn primary go" type="button">${last ? 'Presentar de nuevo' : 'Empezar examen'}</button></div></section>`);
     host.appendChild(intro);
