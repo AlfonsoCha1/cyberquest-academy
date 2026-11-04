@@ -40,7 +40,7 @@ VIEWS.inicio = function (view) {
   view.appendChild(h(`<section class="panel"><span class="eyebrow">En construcción</span><h3>Lo que sigue en la academia</h3>
     <ul class="list"><li>Profesora IA por texto y después por voz, para preguntarle y que te corrija.</li><li>Entrevistador IA para practicar entrevistas de analista SOC, con reporte de fortalezas y pendientes.</li><li>Diplomas internos en PDF al completar rutas.</li><li>App instalable (PWA) y progreso guardado en la nube entre tu PC y tu celular.</li></ul>
     <p class="muted" style="font-size:.85rem">Todavía no están activos: cuando estén listos aparecerán en el menú.</p></section>`));
-  view.appendChild(h(`<p class="muted" style="font-size:.85rem">Entorno de práctica con fines educativos. Todo ocurre en simulaciones aisladas dentro de esta página; nada toca equipos o redes reales. Tu progreso se guarda solo en este navegador.</p>`));
+  view.appendChild(h(`<p class="muted" style="font-size:.85rem">Entorno de práctica con fines educativos. Todo ocurre en simulaciones aisladas dentro de esta página; nada toca equipos o redes reales. Tu progreso se guarda solo en este navegador. <a href="#legal">Términos y privacidad</a></p>`));
 };
 
 /* ---------- Security+ ---------- */

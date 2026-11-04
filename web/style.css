@@ -333,7 +333,8 @@ html.lite .canvas-wrap { background-image: none; }
 .panel.hero { background: linear-gradient(120deg, rgba(40,22,86,.96), rgba(10,26,58,.94) 60%, rgba(46,10,60,.94)) padding-box, linear-gradient(110deg, var(--neon), var(--plasma) 30%, var(--cyan) 70%, var(--ok)) border-box; --hue: var(--neon); }
 .panel.hero h2 { color: #fff; }
 .side .lite-btn { margin-top: 0; }
-@media (max-width: 860px) { .side .lite-btn { display: none; } }
+.side .legal-link { display: block; text-align: center; text-decoration: none; margin-bottom: 6px; }
+@media (max-width: 860px) { .side .lite-btn, .side .legal-link { display: none; } }
 #toast { opacity: 0; visibility: hidden; transition: transform .25s, opacity .2s, visibility .2s; }
 #toast.show { opacity: 1; visibility: visible; }
 .sync-code { font-size: 1.05rem; letter-spacing: .08em; padding: .35rem .6rem; color: var(--cyan); border-color: rgba(30,232,255,.5); }

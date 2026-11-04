@@ -57,7 +57,7 @@ web/      App estática (HTML + CSS + JS sin dependencias) · PWA con service wo
   daily.js         misión del día y racha
   vendor/          motor SQLite (sql.js, licencia MIT)
 api/      API en Node (sin framework) para sincronizar progreso
-tests/    pruebas del laboratorio de redes
+tests/    pruebas: laboratorio de redes, SQL, formación externa y CTF
 tools/    íconos y versión de un solo archivo para Claude
 ```
 
@@ -74,6 +74,7 @@ cd api && npm install && npm start
 node tests/netlab.test.js
 node tests/sql.test.js
 node tests/ext.test.js
+node tests/ctf.test.js
 cd api && npm test
 ```
 

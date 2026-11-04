@@ -5,7 +5,7 @@ const CTF = [
     story: 'Un desarrollador guardó un "secreto" en la configuración y dice que está cifrado. Revisa el valor.',
     art: 'secreto=Q1F7YmFzZTY0X25vX2VzX2NpZnJhZG99',
     ask: 'Encuentra la bandera. Formato: CQ{...}',
-    hints: ['Termina en letras y números sin espacios: huele a Base64.', 'Usa la caja de herramientas: Decodificar → Base64 → texto.'],
+    hints: ['Lo que va después de "secreto=" son letras y números sin espacios: huele a Base64.', 'Copia solo lo que está después de "secreto=" y usa la caja de herramientas: Decodificar → Base64 → texto.'],
     h: '2bfd92e31a1c26d3ebba4f987e7e66638b142193c6754a0b1d26186b78e2b8d3',
     learn: 'Base64 es una codificación, no un cifrado: cualquiera lo revierte sin llave. Las contraseñas y llaves se guardan en un gestor de secretos o cifradas de verdad (AES), nunca "escondidas" en Base64.' },
   { id: 'c2', t: 'El juego del César', cat: 'Cripto', dif: 'Fácil', pts: 30,
